@@ -4,8 +4,85 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c8b2c9b8e7a8021ec3a9b04291c5979c",
+    "content-hash": "0e7ed91978bd48cf3deda3711aba5e64",
     "packages": [
+        {
+            "name": "aerni/laravel-spotify",
+            "version": "v1.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aerni/laravel-spotify.git",
+                "reference": "eb5aeea10c80cc818baeb627adab89fd610cd685"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aerni/laravel-spotify/zipball/eb5aeea10c80cc818baeb627adab89fd610cd685",
+                "reference": "eb5aeea10c80cc818baeb627adab89fd610cd685",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.5",
+                "illuminate/support": "^6.0 || ^7.0",
+                "php": "7.2.* || 7.3.* || 7.4.*"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^4.0 || ^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Aerni\\Spotify\\Providers\\SpotifyClientServiceProvider",
+                        "Aerni\\Spotify\\Providers\\SpotifyServiceProvider"
+                    ],
+                    "aliases": {
+                        "SpotifyClient": "Aerni\\Spotify\\Facades\\SpotifyClientFacade",
+                        "Spotify": "Aerni\\Spotify\\Facades\\SpotifyFacade",
+                        "SpotifySeed": "Aerni\\Spotify\\Facades\\SpotifySeedFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Aerni\\Spotify\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Aerni",
+                    "email": "hello@michaelaerni.ch",
+                    "homepage": "https://www.michaelaerni.ch",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A Laravel wrapper for the Spotify Web API",
+            "homepage": "https://github.com/aerni/laravel-spotify",
+            "keywords": [
+                "Album",
+                "Artists",
+                "albums",
+                "api",
+                "artist",
+                "browse",
+                "laravel",
+                "music",
+                "playlist",
+                "playlists",
+                "search",
+                "songs",
+                "spotify",
+                "spotify-api",
+                "spotify-web-api",
+                "track",
+                "tracks",
+                "wrapper"
+            ],
+            "time": "2020-05-14T13:29:28+00:00"
+        },
         {
             "name": "asm89/stack-cors",
             "version": "v2.0.1",
