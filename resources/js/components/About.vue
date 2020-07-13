@@ -11,6 +11,9 @@
                 </div>
             </div>
         </div>
+
+        <v-btn @click="spotifyCall">Test</v-btn>
+
     </div>
 </template>
 
@@ -18,6 +21,13 @@
     export default {
         mounted() {
             console.log('Component mounted.')
+        },
+        methods: {
+            async spotifyCall() {
+                const data = window.axios.get('/api/spotify/retrieve').then(response => {
+                    console.log(response.data)
+                })
+            }
         }
     }
 </script>

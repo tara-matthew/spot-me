@@ -12,7 +12,7 @@
                     </v-card-text>
                 </v-card>
 
-                <v-btn @click="callSpotify">Test</v-btn>
+                <v-btn @click="authenticateSpotify">Test</v-btn>
             </v-col>
         </v-row>
     </v-container>
@@ -25,15 +25,10 @@
         },
 
         methods: {
-            async callSpotify() {
-                // window.location='https://accounts.spotify.com';
-                const data = window.axios.get('/api/spotify').then(response => {
-                    console.log(response)
+            async authenticateSpotify() {
+                const data = window.axios.get('/api/spotify/authenticate').then(response => {
                     window.location = response.data;
-                    // console.log(response.request.responseURL)
-                    // window.location = response.request.responseURL
                 })
-                console.log(data);
             }
         }
     }
