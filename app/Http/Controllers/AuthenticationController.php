@@ -8,20 +8,32 @@ use SpotifyWebAPI as SpotifyWebApi;
 
 class AuthenticationController extends Controller
 {
-    public function __construct()
+    protected $spotify;
+//    public function __construct()
+//    {
+//        $this->spotify = new SpotifyWebApi\SpotifyWebAPI;
+//        $this->session = new SpotifyWebAPI\Session(
+//            env('SPOTIFY_CLIENT_ID'),
+//            env('SPOTIFY_CLIENT_SECRET'),
+//            env('SPOTIFY_CALLBACK_URL'));
+//
+//        // Request a access token with optional scopes
+//        $scopes = array(
+//            'playlist-read-private',
+//            'user-read-private'
+//        );
+//
+//    }
+
+    public function __construct(SpotifyWebApi\SpotifyWebApi $spotify)
     {
-        $this->spotify = new SpotifyWebApi\SpotifyWebAPI;
+        $this->spotify = $spotify;
+
         $this->session = new SpotifyWebAPI\Session(
             env('SPOTIFY_CLIENT_ID'),
             env('SPOTIFY_CLIENT_SECRET'),
-            env('SPOTIFY_CALLBACK_URL'));
-
-        // Request a access token with optional scopes
-        $scopes = array(
-            'playlist-read-private',
-            'user-read-private'
+            env('SPOTIFY_CALLBACK_URL')
         );
-
     }
 
     public function authenticate()
@@ -34,19 +46,20 @@ class AuthenticationController extends Controller
 //        dd('here');
         $code = $request->get('code');
         $this->session->requestAccessToken($code);
+        $token = $this->session->getAccessToken();
         $this->spotify->setAccessToken($this->session->getAccessToken());
-        dd($this->spotify);
-//        dd($code);
-        // Save the token
+        // Save the token in the session for now
 
-//        $redirect = $request->session()->get('redirect', 'test');
+        $request->session()->put('token', $token);
 
         return redirect('about');
     }
 
-    public function retrieve()
+    public function retrieve(Request $request)
     {
-        dd($this->session);
-        dd($this->spotify->getTrack('7EjyzZcbLxW7PaaLua9Ksb'));
+        $token = $request->session()->get('token');
+        $this->spotify->setAccessToken($token);
+
+        dd($this->spotify->me());
     }
 }
