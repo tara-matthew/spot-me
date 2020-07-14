@@ -32,12 +32,12 @@ class UserController extends Controller
 
         // Get the result in json
         $topTracks = response()->json($topTracks);
-        
+
         // Decode the json
-        $topTracks = $topTracks->getData();
+        $topTracks = $topTracks->getData()->items;
 
         $info = [];
-        foreach($topTracks->items as $key => $item) {
+        foreach($topTracks as $key => $item) {
             $info[$key]['name'] = $item->name;
             $info[$key]['artist'] = $item->album->artists[0]->name;
         }
