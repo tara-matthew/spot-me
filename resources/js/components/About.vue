@@ -1,32 +1,38 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">About Component</div>
+    <v-container>
+        <v-btn @click="getTopTracks">Get my top tracks</v-btn>
 
-                    <div class="card-body">
-                        I'm an example component.
-                    </div>
-                </div>
-            </div>
-        </div>
+        <v-list>
+            <v-list-item-group>
+                <v-list-item
+                    v-for="track in tracks" :key="track.name">
+                        {{ track.artist }} - {{ track.name }}
+                </v-list-item>
+            </v-list-item-group>
+        </v-list>
 
-        <v-btn @click="spotifyCall">Test</v-btn>
-
-    </div>
+    </v-container>
 </template>
 
 <script>
     export default {
+        data() {
+            return {
+                tracks: null
+            }
+        },
         mounted() {
             console.log('Component mounted.')
         },
         methods: {
-            async spotifyCall() {
-                const data = window.axios.get('/api/spotify/retrieve').then(response => {
-                    console.log(response.data)
+            async getTopTracks() {
+
+                window.axios.get('/api/top-tracks').then(response => {
+                    this.tracks = response.data;
+                    console.log(this.tracks);
+
                 })
+
             }
         }
     }

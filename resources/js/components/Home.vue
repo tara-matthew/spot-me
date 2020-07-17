@@ -1,21 +1,21 @@
 <template>
+
     <v-container>
-        <v-row>
-            <v-col
-                cols="12">
-                <v-card
-                    class="mt-5">
-                    <v-card-title>Home Component</v-card-title>
+        <v-card
+            class="mx-auto"
+            max-width="344"
+            outlined>
+            <v-card-title class="justify-center"><h1>Authenticate!</h1></v-card-title>
+        </v-card>
 
-                    <v-card-text>
-                        I'm an example component.
-                    </v-card-text>
-                </v-card>
-
-                <v-btn @click="authenticateSpotify">Test</v-btn>
-            </v-col>
-        </v-row>
+        <div>
+            <v-btn
+                @click="authenticateSpotify">
+                Authenticate me please
+            </v-btn>
+        </div>
     </v-container>
+
 </template>
 
 <script>
