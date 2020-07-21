@@ -27,7 +27,7 @@
         methods: {
             async getTopTracks() {
 
-                window.axios.get('/api/top-tracks').then(response => {
+                window.axios.get('/api/tracks/top').then(response => {
                     this.tracks = response.data;
                     console.log(this.tracks);
 

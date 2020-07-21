@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use SpotifyWebAPI as SpotifyWebApi;
+use SpotifyWebAPI;
+use SpotifyWebAPI\Session;
 
 
 class AuthenticationController extends Controller
@@ -14,7 +15,7 @@ class AuthenticationController extends Controller
     {
         $this->spotify = $spotify;
 
-        $this->session = new SpotifyWebAPI\Session(
+        $this->session = new Session(
             env('SPOTIFY_CLIENT_ID'),
             env('SPOTIFY_CLIENT_SECRET'),
             env('SPOTIFY_CALLBACK_URL')

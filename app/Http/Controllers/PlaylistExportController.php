@@ -4,36 +4,27 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use SpotifyWebAPI as SpotifyWebApi;
+use App\Http\Helpers\Playlist;
+use App\Http\Helpers\Export;
 
-class TopTracksController extends Controller
+
+class PlaylistExportController extends Controller
 {
     protected $spotify;
 
     public function __construct(SpotifyWebApi\SpotifyWebApi $spotify)
     {
         $this->spotify = $spotify;
+        $this->playlist = new Playlist($spotify);
     }
-
-    public function index(Request $request)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
     {
-        $token = $request->session()->get('token');
-        $this->spotify->setAccessToken($token);
-        $options = ['limit' => 50];
-        $topTracks = $this->spotify->getMyTop('tracks', $options);
-
-        // Get the result in json
-        $topTracks = response()->json($topTracks);
-
-        // Decode the json
-        $topTracks = $topTracks->getData()->items;
-
-        $info = [];
-        foreach($topTracks as $key => $item) {
-            $info[$key]['name'] = $item->name;
-            $info[$key]['artist'] = $item->album->artists[0]->name;
-        }
-
-        return $info;
+        //
     }
 
     /**
@@ -41,9 +32,11 @@ class TopTracksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //
+
+
     }
 
     /**
@@ -55,6 +48,8 @@ class TopTracksController extends Controller
     public function store(Request $request)
     {
         //
+
+
     }
 
     /**

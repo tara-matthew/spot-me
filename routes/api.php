@@ -19,14 +19,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Route::resource('/spotify', 'SpotifyController');
-//Route::get('/facade', function() {
-//    return SpotifyFacade::
-//})
-
-//Route::resource('spotify/callback', 'TestController');
-
 Route::get('/spotify/authenticate', 'AuthenticationController@authenticate');
 Route::get('/spotify/callback', 'AuthenticationController@redirect');
 
-Route::Resource('/top-tracks', 'TopTracksController');
+Route::get('tracks/top', 'TrackController@getTopTracks');
+Route::Resource('/tracks', 'TrackController');
+
+Route::get('playlists/export', 'PlaylistController@exportPlaylists');
+Route::get('playlists/{playlist}/export', 'PlaylistController@exportPlaylist');
+Route::Resource('/playlists', 'PlaylistController');
+
+Route::Resource('/export-playlists', 'PlaylistExportController');
