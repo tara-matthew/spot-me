@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Home from '@/js/components/Home';
 import About from '@/js/components/About';
 import Playlists from '@/js/components/Playlists';
+import Playlist from '@/js/components/Playlist';
 
 
 
@@ -25,6 +26,11 @@ const router = new VueRouter({
             path: '/playlists',
             name: 'playlists',
             component: Playlists
+        },
+        {
+            path: '/playlists/:playlistId',
+            name: 'viewPlaylist',
+            component: Playlist
         }
     ]
 })

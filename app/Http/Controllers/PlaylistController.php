@@ -10,6 +10,7 @@ use App\Http\Helpers\Export;
 class PlaylistController extends Controller
 {
     protected $spotify;
+    protected $playlist;
 
     public function __construct(SpotifyWebApi\SpotifyWebApi $spotify)
     {
@@ -24,13 +25,12 @@ class PlaylistController extends Controller
     public function index(Request $request)
     {
         $api = $this->spotify;
-
         $token = $request->session()->get('token');
         $api->setAccessToken($token);
-#
-        $playlistTracks = $this->playlist->getTracks();
 
-        return $playlistTracks;
+        $playlistData = $this->playlist->getPlaylistData();
+
+        return $playlistData;
     }
 
     public function exportPlaylists(Request $request)
@@ -79,8 +79,32 @@ class PlaylistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
+        $api = $this->spotify;
+    
+        $token = $request->session()->get('token');
+        $api->setAccessToken($token);
+
+        $tracks = $api->getPlaylistTracks($id);
+
+        // Get the result in json
+        $tracks = response()->json($tracks);
+
+        // Decode the json
+        $tracks = $tracks->getData()->items;
+
+        $info = [];
+
+        $info['playlistTitle'] = $api->getPlaylist($id)->name;
+
+        foreach($tracks as $key => $item) {
+            $info[$key]['name'] = $item->track->name;
+            $info[$key]['artist'] = $item->track->artists[0]->name;
+        }
+
+        return $info;
+
         //
     }
 

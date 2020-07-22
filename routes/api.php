@@ -28,5 +28,6 @@ Route::Resource('/tracks', 'TrackController');
 Route::get('playlists/export', 'PlaylistController@exportPlaylists');
 Route::get('playlists/{playlist}/export', 'PlaylistController@exportPlaylist');
 Route::Resource('/playlists', 'PlaylistController');
+Route::Resource('playlists.tracks', 'PlaylistTrackController');
 
 Route::Resource('/export-playlists', 'PlaylistExportController');

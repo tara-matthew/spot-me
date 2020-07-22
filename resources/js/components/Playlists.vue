@@ -1,17 +1,16 @@
 <template>
     <v-container>
-        <v-btn @click="getPlaylists">Get my playlists</v-btn>
         <v-btn @click="exportPlaylists">Export my playlists</v-btn>
 
-
-        <!--<v-list>-->
-            <!--<v-list-item-group>-->
-                <!--<v-list-item-->
-                        <!--v-for="track in tracks" :key="track.name">-->
-                    <!--{{ track.artist }} - {{ track.name }}-->
-                <!--</v-list-item>-->
-            <!--</v-list-item-group>-->
-        <!--</v-list>-->
+        <v-list>
+            <v-list-item-group>
+                <v-list-item
+                        @click="goToRoute"
+                        v-for="playlist in playlists" :key="playlist.id" :id="playlist.id">
+                    {{ playlist.name }}
+                </v-list-item>
+            </v-list-item-group>
+        </v-list>
 
     </v-container>
 </template>
@@ -24,23 +23,26 @@
             }
         },
         mounted() {
-            console.log('Component mounted.')
+            console.log('Component mounted.');
+            window.axios.get('/api/playlists').then(response => {
+                this.playlists = response.data;
+                console.log(this.playlists);
+            })
         },
         methods: {
-            async getPlaylists() {
-
-                window.axios.get('/api/playlists').then(response => {
-                    this.playlists = response.data;
-                    // console.log(this.playlists);
-                })
-
-            },
-
             async exportPlaylists() {
                 window.axios.get('/api/playlists/export').then(response => {
                     this.playlists = response.data;
-                    console.log(this.playlists);
+                })
+            },
 
+            goToRoute() {
+                const playlistId = event.target.id
+                this.$router.push({
+                    name:'viewPlaylist',
+                    params: {
+                        playlistId: playlistId
+                    }
                 })
             }
         }

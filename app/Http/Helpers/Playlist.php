@@ -2,7 +2,6 @@
 
 namespace App\Http\Helpers;
 
-use Illuminate\Database\Eloquent\Model;
 use SpotifyWebAPI as SpotifyWebApi;
 
 class Playlist
@@ -38,6 +37,7 @@ class Playlist
 
             $userPlaylists[$key]['id'] = $playlist->id;
             $userPlaylists[$key]['name'] = $playlist->name;
+            $userPlaylists[$key]['position'] = $key + 1;
 
             $key++;
         }
