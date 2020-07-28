@@ -40,16 +40,37 @@ class PlaylistController extends Controller
         $token = $request->session()->get('token');
         $api->setAccessToken($token);
 
-//        $playlist = new Playlist();
         $playlistData = $this->playlist->getPlaylistData($api);
         $this->playlist->exportToCsv($playlistData);
 
         return $playlistData;
     }
 
-    public function exportPlaylist(Request $request)
+    public function exportPlaylist($id, Request $request)
     {
-        dd('single playlist');
+        $api = $this->spotify;
+
+        $token = $request->session()->get('token');
+        $api->setAccessToken($token);
+
+        $tracks = $api->getPlaylistTracks($id);
+
+        // Get the result in json
+        $tracks = response()->json($tracks);
+
+        // Decode the json
+        $tracks = $tracks->getData()->items;
+
+        $info = [];
+
+        $info['playlistTitle'] = $api->getPlaylist($id)->name;
+
+        foreach($tracks as $key => $item) {
+            $info[$key]['name'] = $item->track->name;
+            $info[$key]['artist'] = $item->track->artists[0]->name;
+        }
+
+        $this->playlist->exportToCsv($info);
     }
 
     /**

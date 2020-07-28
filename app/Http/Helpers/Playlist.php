@@ -79,9 +79,12 @@ class Playlist
         $file = fopen('file.csv', 'w');
         // loop over the input array
         foreach ($json as $line) {
-            // generate csv lines from the inner arrays
-            fputcsv($file, [$line['name']]);
+            if (is_array($line)) {
+                // generate csv lines from the inner arrays
+                fputcsv($file, [$line['name'], $line['artist']]);
+            }
         }
+
         // reset the file pointer to the start of the file
 //        fseek($f, 0);
         // tell the browser it's going to be a csv file

@@ -1,6 +1,7 @@
 <template>
     <v-container>
-        <h1>{{ playlist.playlistTitle }}</h1>
+        <h1 v-if="playlist">{{ playlist.playlistTitle }}</h1>
+        <v-btn @click="exportPlaylist">Export this playlist</v-btn>
 
         <v-list>
             <v-list-item-group>
@@ -20,7 +21,7 @@
                 playlist: null
             }
         },
-        mounted() {
+        async mounted() {
             console.log('Playlist component mounted.');
             const playlistId = this.$route.params.playlistId;
             console.log(playlistId);
@@ -31,6 +32,12 @@
         },
 
         methods: {
+            exportPlaylist() {
+                const playlistId = this.$route.params.playlistId;
+                window.axios.get('/api/playlists/' + playlistId + '/export').then(response => {
+                    this.playlist = response.data;
+                })
+            }
         }
     }
 </script>
