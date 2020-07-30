@@ -39,7 +39,7 @@
             goToRoute() {
                 const playlistId = event.target.id
                 this.$router.push({
-                    name:'viewPlaylist',
+                    name: 'viewPlaylist',
                     params: {
                         playlistId: playlistId
                     }

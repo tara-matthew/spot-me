@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use SpotifyWebAPI as SpotifyWebApi;
 use App\Http\Helpers\Playlist;
-use App\Http\Helpers\Export;
 
 class PlaylistController extends Controller
 {
@@ -25,23 +24,20 @@ class PlaylistController extends Controller
     public function index(Request $request)
     {
         // authentication
-        $api = $this->spotify;
         $token = $request->session()->get('token');
-        $api->setAccessToken($token);
+        $this->spotify->setAccessToken($token);
 
-        $playlistData = $this->playlist->getPlaylistData();
+        $playlistData = $this->playlist->getUserPlaylists();
 
         return $playlistData;
     }
 
     public function exportPlaylists(Request $request)
     {
-        $api = $this->spotify;
-
         $token = $request->session()->get('token');
-        $api->setAccessToken($token);
+        $this->spotify->setAccessToken($token);
 
-        $playlistData = $this->playlist->getPlaylistData($api);
+        $playlistData = $this->playlist->getUserPlaylists($this->spotify);
         $this->playlist->exportToCsv($playlistData);
 
         return $playlistData;
@@ -50,23 +46,20 @@ class PlaylistController extends Controller
     public function exportPlaylist($id, Request $request)
     {
         // Authentication
-        $api = $this->spotify;
         $token = $request->session()->get('token');
-        $api->setAccessToken($token);
+        $this->spotify->setAccessToken($token);
 
-        $tracks = $api->getPlaylistTracks($id);
+        $tracks = $this->spotify->getPlaylistTracks($id);
         // Get the result in json
         $tracks = response()->json($tracks);
         // Decode the json
         $tracks = $tracks->getData()->items;
 
-        $info = [];
-
         $info = $this->playlist->getTracks($id);
 
-        $info['playlistTitle'] = $api->getPlaylist($id)->name;
+        $info['playlistTitle'] = $this->spotify->getPlaylist($id)->name;
 
-        foreach($tracks as $key => $item) {
+        foreach ($tracks as $key => $item) {
             $info[$key]['name'] = $item->track->name;
             $info[$key]['artist'] = $item->track->artists[0]->name;
         }
@@ -87,7 +80,7 @@ class PlaylistController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -114,7 +107,7 @@ class PlaylistController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -125,8 +118,8 @@ class PlaylistController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -137,7 +130,7 @@ class PlaylistController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

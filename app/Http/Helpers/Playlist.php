@@ -13,23 +13,25 @@ class Playlist
         $this->spotify = $spotify;
     }
 
-    public function getPlaylistData()
+    /**
+     * Get the playlists which a user has made
+     * @return array
+     */
+    public function getUserPlaylists()
     {
-        $api = $this->spotify;
-
         $options = ['limit' => 50];
         $userPlaylists = [];
 
-        $userId = $api->me()->id;
+        $userId = $this->spotify->me()->id;
 
         $playlists = (response()
-            ->json($api->getUserPlaylists($userId, $options))
+            ->json($this->spotify->getUserPlaylists($userId, $options))
             ->getData()
             ->items);
 
         $key = 0;
 
-        foreach($playlists as $playlist) {
+        foreach ($playlists as $playlist) {
             //s Skip over playlists not made by the current user
             if ($playlist->owner->uri != 'spotify:user:' . $userId) {
                 continue;
@@ -46,6 +48,11 @@ class Playlist
 
     }
 
+    /**
+     * Get a playlist's tracks in a format to be displayed
+     * @param $id
+     * @return array
+     */
     public function getTracks($id)
     {
         $tracks = $this->spotify->getPlaylistTracks($id);
@@ -58,19 +65,18 @@ class Playlist
 
         $info['playlistTitle'] = $this->spotify->getPlaylist($id)->name;
 
-        foreach($tracks as $key => $item) {
+        foreach ($tracks as $key => $item) {
             $info[$key]['name'] = $item->track->name;
             $info[$key]['artist'] = $item->track->artists[0]->name;
         }
 
         return $info;
-
     }
 
     public function exportToCsv($json)
     {
         $filename = "export.csv";
-        $delimiter=";";
+        $delimiter = ";";
 
         // open raw memory as file so no temp files needed, you might run out of memory though
         $file = fopen('file.csv', 'w');
@@ -87,7 +93,7 @@ class Playlist
         // tell the browser it's going to be a csv file
 //        header('Content-Type: application/csv');
         // tell the browser we want to save it instead of displaying it
-        header('Content-Disposition: attachment; filename="'.$filename.'";');
+        header('Content-Disposition: attachment; filename="' . $filename . '";');
         // make php send the generated csv lines to the browser
 //        fpassthru($f);
 
