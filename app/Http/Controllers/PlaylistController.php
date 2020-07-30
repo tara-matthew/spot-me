@@ -12,18 +12,19 @@ class PlaylistController extends Controller
     protected $spotify;
     protected $playlist;
 
-    public function __construct(SpotifyWebApi\SpotifyWebApi $spotify)
+    public function __construct(SpotifyWebApi\SpotifyWebAPI $spotify)
     {
         $this->spotify = $spotify;
-        $this->playlist = new Playlist($spotify);
+        $this->playlist = new Playlist($this->spotify);
     }
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return array
      */
     public function index(Request $request)
     {
+        // authentication
         $api = $this->spotify;
         $token = $request->session()->get('token');
         $api->setAccessToken($token);
@@ -48,20 +49,20 @@ class PlaylistController extends Controller
 
     public function exportPlaylist($id, Request $request)
     {
+        // Authentication
         $api = $this->spotify;
-
         $token = $request->session()->get('token');
         $api->setAccessToken($token);
 
         $tracks = $api->getPlaylistTracks($id);
-
         // Get the result in json
         $tracks = response()->json($tracks);
-
         // Decode the json
         $tracks = $tracks->getData()->items;
 
         $info = [];
+
+        $info = $this->playlist->getTracks($id);
 
         $info['playlistTitle'] = $api->getPlaylist($id)->name;
 
@@ -95,38 +96,19 @@ class PlaylistController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @param Request $request
+     * @return array
      */
     public function show($id, Request $request)
     {
-        $api = $this->spotify;
-    
+        // Authentication
         $token = $request->session()->get('token');
-        $api->setAccessToken($token);
+        $this->spotify->setAccessToken($token);
 
-        $tracks = $api->getPlaylistTracks($id);
-
-        // Get the result in json
-        $tracks = response()->json($tracks);
-
-        // Decode the json
-        $tracks = $tracks->getData()->items;
-
-        $info = [];
-
-        $info['playlistTitle'] = $api->getPlaylist($id)->name;
-
-        foreach($tracks as $key => $item) {
-            $info[$key]['name'] = $item->track->name;
-            $info[$key]['artist'] = $item->track->artists[0]->name;
-        }
+        $info = $this->playlist->getTracks($id);
 
         return $info;
-
-        //
     }
 
     /**

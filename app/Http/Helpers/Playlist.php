@@ -8,7 +8,7 @@ class Playlist
 {
     protected $spotify;
 
-    public function __construct(SpotifyWebApi\SpotifyWebApi $spotify)
+    public function __construct(SpotifyWebApi\SpotifyWebAPI $spotify)
     {
         $this->spotify = $spotify;
     }
@@ -46,20 +46,17 @@ class Playlist
 
     }
 
-    public function getTracks()
+    public function getTracks($id)
     {
-        $api = $this->spotify;
-        $playlistData = $this->getPlaylistData($api);
-
-        $tracks = $api->getPlaylistTracks($playlistData[0]['id']);
-
+        $tracks = $this->spotify->getPlaylistTracks($id);
         // Get the result in json
         $tracks = response()->json($tracks);
-
         // Decode the json
         $tracks = $tracks->getData()->items;
 
         $info = [];
+
+        $info['playlistTitle'] = $this->spotify->getPlaylist($id)->name;
 
         foreach($tracks as $key => $item) {
             $info[$key]['name'] = $item->track->name;
