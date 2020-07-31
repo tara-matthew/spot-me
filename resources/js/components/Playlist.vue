@@ -2,6 +2,8 @@
     <v-container>
         <h1 v-if="playlist">{{ playlist.playlistTitle }}</h1>
         <v-btn @click="exportPlaylist">Export this playlist</v-btn>
+        <v-btn @click="analysePlaylistTracks">Analyse tracks</v-btn>
+
 
         <v-list>
             <v-list-item-group>
@@ -18,7 +20,8 @@
     export default {
         data() {
             return {
-                playlist: null
+                playlist: null,
+                analysis: null
             }
         },
         async mounted() {
@@ -36,6 +39,13 @@
                 const playlistId = this.$route.params.playlistId;
                 window.axios.get('/api/playlists/' + playlistId + '/export').then(response => {
                     this.playlist = response.data;
+                })
+            },
+            analysePlaylistTracks() {
+                const playlistId = this.$route.params.playlistId;
+                window.axios.get('/api/playlists/' + playlistId + '/analyse').then(response => {
+                    this.analysis = response.data;
+                    console.log(this.analysis);
                 })
             }
         }

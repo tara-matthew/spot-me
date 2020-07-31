@@ -61,9 +61,33 @@ class Playlist
         // Decode the json
         $tracks = $tracks->getData()->items;
 
+        return $tracks;
+    }
+
+    public function getTrackIds($tracks)
+    {
+        $ids = [];
+        foreach ($tracks as $key => $track) {
+            $ids[] = $track->track->id;
+        }
+
+        return $ids;
+    }
+
+    public function getAudioAnalysis($ids)
+    {
+        $analysis = $this->spotify->getAudioFeatures($ids);
+        $analysis = response()->json($analysis);
+
+        return $analysis;
+
+    }
+
+    public function formatTracks($tracks, $playlistId)
+    {
         $info = [];
 
-        $info['playlistTitle'] = $this->spotify->getPlaylist($id)->name;
+        $info['playlistTitle'] = $this->spotify->getPlaylist($playlistId)->name;
 
         foreach ($tracks as $key => $item) {
             $info[$key]['name'] = $item->track->name;
@@ -71,6 +95,33 @@ class Playlist
         }
 
         return $info;
+    }
+
+    public function formatAnalysis($tracks)
+    {
+        $excludedCategories = [
+            'type',
+            'id',
+            'uri',
+            'track_href'
+        ];
+
+        $data = $tracks->getData()->audio_features;
+//        dd($data);
+        $analysis = [];
+
+        foreach ($data as $key => $track) {
+            foreach ($track as $category => $value) {
+                if (in_array($category, $excludedCategories)) {
+                    continue;
+                }
+
+                $analysis[$key][$category] = $value;
+            }
+        }
+
+
+        return $analysis;
     }
 
     public function exportToCsv($json)

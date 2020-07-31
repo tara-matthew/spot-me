@@ -32,6 +32,22 @@ class PlaylistController extends Controller
         return $playlistData;
     }
 
+    public function analysePlaylistTracks($id, Request $request)
+    {
+        $token = $request->session()->get('token');
+        $this->spotify->setAccessToken($token);
+
+        $tracks = $this->playlist->getTracks($id);
+        $ids = $this->playlist->getTrackIds($tracks);
+
+        $analysis = response()
+            ->json($this->spotify->getAudioFeatures($ids));
+
+        $analysis = $this->playlist->formatAnalysis($analysis);
+
+        return $analysis;
+    }
+
     public function exportPlaylists(Request $request)
     {
         $token = $request->session()->get('token');
@@ -99,9 +115,10 @@ class PlaylistController extends Controller
         $token = $request->session()->get('token');
         $this->spotify->setAccessToken($token);
 
-        $info = $this->playlist->getTracks($id);
+        $tracks = $this->playlist->getTracks($id);
+        $formattedTracks = $this->playlist->formatTracks($tracks, $id);
 
-        return $info;
+        return $formattedTracks;
     }
 
     /**
