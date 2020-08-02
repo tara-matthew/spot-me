@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use SpotifyWebAPI;
 use SpotifyWebAPI\Session;
-
+use Illuminate\Support\Facades\DB;
 
 class AuthenticationController extends Controller
 {
@@ -42,11 +42,8 @@ class AuthenticationController extends Controller
         $accessToken = $this->session->getAccessToken();
         $refreshToken = $this->session->getRefreshToken();
 
-        $this->spotify->setAccessToken($accessToken);
+        DB::insert('update authentication set token = ? where id = 1', [$accessToken]);
 
-        // Save the token in the session for now
-        $request->session()->put('token', $accessToken);
-
-        return redirect('about');
+        return redirect('playlists');
     }
 }

@@ -48,6 +48,17 @@ class Playlist
 
     }
 
+    public function analysePlaylistTracks($playlistId)
+    {
+        $tracks = $this->getTracks($playlistId);
+        $ids = $this->getTrackIds($tracks);
+
+        $analysis = response()
+            ->json($this->spotify->getAudioFeatures($ids));
+
+        return $this->formatAnalysis($analysis);
+    }
+
     /**
      * Get a playlist's tracks in a format to be displayed
      * @param $id

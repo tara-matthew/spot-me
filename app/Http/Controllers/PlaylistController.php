@@ -5,15 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use SpotifyWebAPI as SpotifyWebApi;
 use App\Http\Helpers\Playlist;
+use Illuminate\Support\Facades\DB;
 
 class PlaylistController extends Controller
 {
     protected $spotify;
     protected $playlist;
 
-    public function __construct(SpotifyWebApi\SpotifyWebAPI $spotify)
+    public function __construct()
     {
-        $this->spotify = $spotify;
+        $this->spotify = \App::make('Spotify');
         $this->playlist = new Playlist($this->spotify);
     }
 
@@ -23,10 +24,6 @@ class PlaylistController extends Controller
      */
     public function index(Request $request)
     {
-        // authentication
-        $token = $request->session()->get('token');
-        $this->spotify->setAccessToken($token);
-
         $playlistData = $this->playlist->getUserPlaylists();
 
         return $playlistData;
@@ -34,25 +31,13 @@ class PlaylistController extends Controller
 
     public function analysePlaylistTracks($id, Request $request)
     {
-        $token = $request->session()->get('token');
-        $this->spotify->setAccessToken($token);
-
-        $tracks = $this->playlist->getTracks($id);
-        $ids = $this->playlist->getTrackIds($tracks);
-
-        $analysis = response()
-            ->json($this->spotify->getAudioFeatures($ids));
-
-        $analysis = $this->playlist->formatAnalysis($analysis);
+        $analysis = $this->playlist->analysePlaylistTracks($id);
 
         return $analysis;
     }
 
     public function exportPlaylists(Request $request)
     {
-        $token = $request->session()->get('token');
-        $this->spotify->setAccessToken($token);
-
         $playlistData = $this->playlist->getUserPlaylists($this->spotify);
         $this->playlist->exportToCsv($playlistData);
 
@@ -61,10 +46,6 @@ class PlaylistController extends Controller
 
     public function exportPlaylist($id, Request $request)
     {
-        // Authentication
-        $token = $request->session()->get('token');
-        $this->spotify->setAccessToken($token);
-
         $tracks = $this->spotify->getPlaylistTracks($id);
         // Get the result in json
         $tracks = response()->json($tracks);
@@ -111,10 +92,6 @@ class PlaylistController extends Controller
      */
     public function show($id, Request $request)
     {
-        // Authentication
-        $token = $request->session()->get('token');
-        $this->spotify->setAccessToken($token);
-
         $tracks = $this->playlist->getTracks($id);
         $formattedTracks = $this->playlist->formatTracks($tracks, $id);
 
