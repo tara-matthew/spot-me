@@ -2,10 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '@/js/components/Home';
 import About from '@/js/components/About';
-import Playlists from '@/js/components/Playlists';
+import Playlists from '@/js/components/Playlists/Index';
 import Playlist from '@/js/components/Playlist';
-
-
 
 Vue.use(VueRouter);
 

@@ -1,7 +1,5 @@
 <template>
     <v-container>
-        <v-btn @click="exportPlaylists">Export my playlists</v-btn>
-
         <v-list>
             <v-list-item-group>
                 <v-list-item
@@ -17,17 +15,16 @@
 
 <script>
     export default {
-        data() {
-            return {
-                playlists: null
-            }
-        },
+        props: [
+            'playlists'
+        ],
         mounted() {
-            console.log('Component mounted.');
-            window.axios.get('/api/playlists').then(response => {
-                this.playlists = response.data;
-                console.log(this.playlists);
-            })
+            console.log('Playlist Component mounted.');
+        },
+        watch: {
+            async playlists() {
+                console.log('here', this.playlists);
+            }
         },
         methods: {
             async exportPlaylists() {
