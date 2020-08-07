@@ -1,9 +1,8 @@
 <template>
     <v-container>
-        <h1 v-if="playlist">{{ playlist.playlistTitle }}</h1>
-        <v-btn @click="exportPlaylist">Export this playlist</v-btn>
-        <v-btn @click="analysePlaylistTracks">Analyse tracks</v-btn>
-
+        <h1> {{ playlist.playlistTitle }}</h1>
+        <v-btn v-if="!isLoading" @click="exportPlaylist">Export this playlist</v-btn>
+        <v-btn v-if="!isLoading" @click="analysePlaylistTracks">Analyse tracks</v-btn>
 
         <v-list>
             <v-list-item-group>
@@ -18,20 +17,17 @@
 
 <script>
     export default {
+        props: [
+            'playlist',
+            'isLoading'
+        ],
         data() {
             return {
-                playlist: null,
                 analysis: null
             }
         },
-        async mounted() {
+        mounted() {
             console.log('Playlist component mounted.');
-            const playlistId = this.$route.params.playlistId;
-            console.log(playlistId);
-
-            window.axios.get('/api/playlists/' + playlistId).then(response => {
-                this.playlist = response.data;
-            })
         },
 
         methods: {
