@@ -12,10 +12,17 @@ class PlaylistController extends Controller
     protected $spotify;
     protected $playlist;
 
-    public function __construct()
+    public function __construct(SpotifyWebApi\SpotifyWebAPI $spotify)
     {
-        $this->spotify = \App::make('Spotify');
+        $this->spotify = $spotify;
         $this->playlist = new Playlist($this->spotify);
+
+        $this->middleware(function ($request, $next) {
+           $token = $request->session()->get('token');
+           $this->spotify->setAccessToken($token);
+
+           return $next($request);
+        });
     }
 
     /**

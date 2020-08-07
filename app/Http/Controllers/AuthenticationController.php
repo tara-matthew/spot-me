@@ -42,7 +42,10 @@ class AuthenticationController extends Controller
         $accessToken = $this->session->getAccessToken();
         $refreshToken = $this->session->getRefreshToken();
 
-        DB::insert('update authentication set token = ? where id = 1', [$accessToken]);
+//        $this->spotify->setAccessToken($accessToken);
+        $request->session()->put('token', $accessToken);
+
+//        DB::insert('update authentication set token = ? where id = 1', [$accessToken]);
 
         return redirect('playlists');
     }
