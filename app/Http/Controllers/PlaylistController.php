@@ -31,19 +31,15 @@ class PlaylistController extends Controller
      */
     public function index(Request $request)
     {
-        $playlistData = $this->playlist->getUserPlaylists();
-
-        return $playlistData;
+        return $this->playlist->getUserPlaylists();
     }
 
-    public function analysePlaylistTracks($id, Request $request)
+    public function analysePlaylistTracks($id)
     {
-        $analysis = $this->playlist->analysePlaylistTracks($id);
-
-        return $analysis;
+        return $this->playlist->analysePlaylistTracks($id);
     }
 
-    public function exportPlaylists(Request $request)
+    public function exportPlaylists()
     {
         $playlistData = $this->playlist->getUserPlaylists($this->spotify);
         $this->playlist->exportToCsv($playlistData);
@@ -51,7 +47,7 @@ class PlaylistController extends Controller
         return $playlistData;
     }
 
-    public function exportPlaylist($id, Request $request)
+    public function exportPlaylist($id)
     {
         $tracks = $this->spotify->getPlaylistTracks($id);
         // Get the result in json
@@ -97,12 +93,9 @@ class PlaylistController extends Controller
      * @param Request $request
      * @return array
      */
-    public function show($id, Request $request)
+    public function show($id)
     {
-        $tracks = $this->playlist->getTracks($id);
-        $formattedTracks = $this->playlist->formatTracks($tracks, $id);
-
-        return $formattedTracks;
+        return $this->playlist->getFormattedTracks($id);
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace App\Http\Helpers;
 
-use SpotifyWebAPI as SpotifyWebApi;
+use SpotifyWebAPI;
 
 class Playlist
 {
@@ -92,6 +92,14 @@ class Playlist
 
         return $analysis;
 
+    }
+
+    public function getFormattedTracks($id)
+    {
+        $tracks = $this->getTracks($id);
+        $formattedTracks = $this->formatTracks($tracks, $id);
+
+        return $formattedTracks;
     }
 
     public function formatTracks($tracks, $playlistId)
