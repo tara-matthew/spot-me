@@ -1,15 +1,12 @@
 <template>
-    <v-container>
-        <v-list>
-            <v-list-item-group>
-                <v-list-item
-                        @click="goToRoute"
-                        v-for="playlist in playlists" :key="playlist.id" :id="playlist.id">
-                    {{ playlist.name }}
-                </v-list-item>
-            </v-list-item-group>
-        </v-list>
-
+    <v-container fill-height>
+        <v-row>
+            <v-col @click="goToRoute(playlist.id)" :id="playlist.id" cols="3" v-for="playlist in playlists" :key="playlist.id">
+                <v-card min-height="200" class="pa-2 text-center justify-center d-flex">
+                    <v-card-title>{{ playlist.name }}</v-card-title>
+                </v-card>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 
@@ -33,8 +30,7 @@
                 })
             },
 
-            goToRoute() {
-                const playlistId = event.target.id
+            goToRoute(playlistId) {
                 this.$router.push({
                     name: 'viewPlaylist',
                     params: {
@@ -45,3 +41,12 @@
         }
     }
 </script>
+
+<style scoped>
+    >>>div.v-card__title {
+        word-break: break-word; /* maybe !important  */
+    }
+    >>>div.v-card:hover {
+        cursor: pointer;
+    }
+</style>
