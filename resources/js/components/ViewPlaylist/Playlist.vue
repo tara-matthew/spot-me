@@ -50,72 +50,21 @@
               let script = [];
               let number = [];
 
-              // for (var i = 0; i < playlistLength - 2; i++ ) {
-              //     script[i] = function (sketch) {
-              //         sketch.setup = _ => {
-              //             sketch.createCanvas(100, 100)
-              //         }
-              //         sketch.draw = _ => {
-              //             // sketch.background(sketch.random(sketch.analysis['valence'])*10);
-              //             // console.log(sketch.analysis['acousticness']);
-              //             sketch.background(sketch.random(sketch.analysis['acousticness']))
-              //         }
-              //     }
-              //
-              //     // const p5 = require('p5');
-              //     // number[i] = new p5(script[i], i.toString())
-              //     // number[i].analysis = this.analysis[i];
-              //     // console.log(number[0]);
-              // }
-
-              const scriptOne = function (sketch) {
+              for (var i = 0; i < playlistLength - 1; i++ ) {
+                  script[i] = function (sketch) {
                       sketch.setup = _ => {
                           sketch.createCanvas(100, 100)
                       }
                       sketch.draw = _ => {
-                          // sketch.background(sketch.random(sketch.analysis['valence'])*10);
-                          // console.log(sketch.analysis['acousticness']);
-                          sketch.background(sketch.random(sketch.analysis['tempo']))
+                          sketch.background(sketch.analysis['tempo'])
                       }
                   }
 
-              const scriptTwo = function (sketch) {
-                  sketch.setup = _ => {
-                      sketch.createCanvas(100, 100)
-                  }
-                  sketch.draw = _ => {
-                      // sketch.background(sketch.random(sketch.analysis['valence'])*10);
-                      // console.log(sketch.analysis['acousticness']);
-                      sketch.background(sketch.random(sketch.analysis['tempo']))
-                  }
+                  const p5 = require('p5');
+                  number[i] = new p5(script[i], i.toString())
+                  number[i].analysis = this.analysis[i];
+                  // console.log(number[0]);
               }
-
-              const p5 = require('p5');
-              const numberOne = new p5(scriptOne, '0')
-              numberOne.analysis = this.analysis[0];
-              const numberTwo = new p5(scriptTwo, '1')
-              numberTwo.analysis = this.analysis[9];
-
-
-              // const script2 = function (p5) {
-              //     var speed = 2;
-              //     var posX = 0;
-              //
-              //     // NOTE: Set up is here
-              //     p5.setup = _ => {
-              //         p5.createCanvas(100, 100)
-              //         // p5.canvas.parent("America");
-              //         p5.background(p5.random(255));
-              //
-              //     }
-              //     // NOTE: Draw is here
-              //     p5.draw = _ => {
-              //     }
-              // }
-              // NOTE: Use p5 as an instance mode
-
-              // new p5(script, '1')
-              // console.log(p5);
           }
         },
 
