@@ -3,6 +3,7 @@
         <page-header />
         <v-container>
             <playlist v-if="playlist" :playlist="playlist" :isLoading="isLoading" />
+            <!--<visualise />-->
         </v-container>
 
     </div>
@@ -12,12 +13,15 @@
 
     import PageHeader from '@/js/components/Header'
     import Playlist from '@/js/components/ViewPlaylist/Playlist'
+    import Visualise from '@/js/components/ViewPlaylist/Visualise'
 
     export default {
         data() {
             return {
                 playlist: {},
-                isLoading: true
+                analysis: {},
+                isLoading: true,
+                p5Loaded: false
             }
         },
 
@@ -27,12 +31,21 @@
             window.axios.get('/api/playlists/' + playlistId).then(response => {
                 this.playlist = response.data;
                 this.isLoading = false;
+                // console.log(this.playlist);
+
             })
+
+            window.axios.get('/api/playlists/' + playlistId + '/analyse').then(response => {
+                this.analysis = response.data;
+                console.log('here', this.analysis);
+            })
+
         },
 
         components: {
             PageHeader,
-            Playlist
+            Playlist,
+            Visualise
         }
     }
 
