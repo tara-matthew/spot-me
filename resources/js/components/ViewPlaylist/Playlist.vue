@@ -43,25 +43,59 @@
             'isLoading',
             'p5Loaded'
         ],
-        // data() {
-        //     return {
-        //         analysis: null
-        //     }
-        // },
-
         watch: {
           analysis() {
-              console.log('here', this.analysis);
-              const script = function (sketch) {
-                  // NOTE: Set up is here
+              console.log(this.analysis)
+              const playlistLength = Object.keys(this.playlist).length;
+              let script = [];
+              let number = [];
+
+              // for (var i = 0; i < playlistLength - 2; i++ ) {
+              //     script[i] = function (sketch) {
+              //         sketch.setup = _ => {
+              //             sketch.createCanvas(100, 100)
+              //         }
+              //         sketch.draw = _ => {
+              //             // sketch.background(sketch.random(sketch.analysis['valence'])*10);
+              //             // console.log(sketch.analysis['acousticness']);
+              //             sketch.background(sketch.random(sketch.analysis['acousticness']))
+              //         }
+              //     }
+              //
+              //     // const p5 = require('p5');
+              //     // number[i] = new p5(script[i], i.toString())
+              //     // number[i].analysis = this.analysis[i];
+              //     // console.log(number[0]);
+              // }
+
+              const scriptOne = function (sketch) {
+                      sketch.setup = _ => {
+                          sketch.createCanvas(100, 100)
+                      }
+                      sketch.draw = _ => {
+                          // sketch.background(sketch.random(sketch.analysis['valence'])*10);
+                          // console.log(sketch.analysis['acousticness']);
+                          sketch.background(sketch.random(sketch.analysis['tempo']))
+                      }
+                  }
+
+              const scriptTwo = function (sketch) {
                   sketch.setup = _ => {
                       sketch.createCanvas(100, 100)
                   }
-                  // NOTE: Draw is here
                   sketch.draw = _ => {
-                      sketch.background(sketch.analysis[0]['tempo']);
+                      // sketch.background(sketch.random(sketch.analysis['valence'])*10);
+                      // console.log(sketch.analysis['acousticness']);
+                      sketch.background(sketch.random(sketch.analysis['tempo']))
                   }
               }
+
+              const p5 = require('p5');
+              const numberOne = new p5(scriptOne, '0')
+              numberOne.analysis = this.analysis[0];
+              const numberTwo = new p5(scriptTwo, '1')
+              numberTwo.analysis = this.analysis[9];
+
 
               // const script2 = function (p5) {
               //     var speed = 2;
@@ -79,9 +113,7 @@
               //     }
               // }
               // NOTE: Use p5 as an instance mode
-              const p5 = require('p5');
-              const numberOne = new p5(script, '0')
-              numberOne.analysis = this.analysis;
+
               // new p5(script, '1')
               // console.log(p5);
           }
