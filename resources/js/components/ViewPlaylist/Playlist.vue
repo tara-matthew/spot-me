@@ -52,18 +52,37 @@
 
               for (var i = 0; i < playlistLength - 1; i++ ) {
                   script[i] = function (sketch) {
+                      let angle = 0;
                       sketch.setup = _ => {
                           sketch.createCanvas(100, 100)
                       }
                       sketch.draw = _ => {
                           sketch.background(sketch.analysis['tempo'])
+                          angle = sketch.analysis['tempo'];
+                          sketch.stroke(255);
+                          sketch.translate(50, sketch.height);
+                          sketch.branch(40);
+                      }
+
+                      sketch.branch = (len) => {
+                          sketch.line(0, 0, 0, -len);
+                          sketch.translate(0, -len);
+                          if (len > 4) {
+                              sketch.push();
+                              sketch.rotate(angle);
+                              sketch.branch(len * 0.6);
+                              sketch.pop();
+                              sketch.push();
+                              sketch.rotate(-angle);
+                              sketch.branch(len * 0.6);
+                              sketch.pop();
+                          }
                       }
                   }
 
                   const p5 = require('p5');
                   number[i] = new p5(script[i], i.toString())
                   number[i].analysis = this.analysis[i];
-                  // console.log(number[0]);
               }
           }
         },
