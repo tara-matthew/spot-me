@@ -52,49 +52,43 @@
         watch: {
           analysis() {
               console.log('here', this.analysis);
+              const script = function (sketch) {
+                  // NOTE: Set up is here
+                  sketch.setup = _ => {
+                      sketch.createCanvas(100, 100)
+                  }
+                  // NOTE: Draw is here
+                  sketch.draw = _ => {
+                      sketch.background(sketch.analysis[0]['tempo']);
+                  }
+              }
+
+              // const script2 = function (p5) {
+              //     var speed = 2;
+              //     var posX = 0;
+              //
+              //     // NOTE: Set up is here
+              //     p5.setup = _ => {
+              //         p5.createCanvas(100, 100)
+              //         // p5.canvas.parent("America");
+              //         p5.background(p5.random(255));
+              //
+              //     }
+              //     // NOTE: Draw is here
+              //     p5.draw = _ => {
+              //     }
+              // }
+              // NOTE: Use p5 as an instance mode
+              const p5 = require('p5');
+              const numberOne = new p5(script, '0')
+              numberOne.analysis = this.analysis;
+              // new p5(script, '1')
+              // console.log(p5);
           }
         },
 
-        updated() {
+        mounted() {
             console.log('Playlist component mounted.');
-            const script = function (sketch) {
-                // NOTE: Set up is here
-                sketch.setup = _ => {
-                    sketch.createCanvas(100, 100)
-                    sketch.background(sketch.random(255));
-
-
-                }
-                // NOTE: Draw is here
-                sketch.draw = _ => {
-                    // console.log('hereeee', sketch.playlist)
-
-                }
-            }
-
-            // const script2 = function (p5) {
-            //     var speed = 2;
-            //     var posX = 0;
-            //
-            //     // NOTE: Set up is here
-            //     p5.setup = _ => {
-            //         p5.createCanvas(100, 100)
-            //         // p5.canvas.parent("America");
-            //         p5.background(p5.random(255));
-            //
-            //     }
-            //     // NOTE: Draw is here
-            //     p5.draw = _ => {
-            //     }
-            // }
-            // NOTE: Use p5 as an instance mode
-            const p5 = require('p5');
-            const numberOne = new p5(script, '0')
-            numberOne.playlist = this.playlist;
-            // new p5(script, '1')
-            // console.log(p5);
-
-
         },
 
         methods: {

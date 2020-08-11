@@ -2,7 +2,7 @@
     <div>
         <page-header />
         <v-container>
-            <playlist v-if="playlist" :playlist="playlist" :isLoading="isLoading" />
+            <playlist v-if="playlist && analysis" :playlist="playlist" :isLoading="isLoading" :analysis="analysis" />
             <!--<visualise />-->
         </v-container>
 
