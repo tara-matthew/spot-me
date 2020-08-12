@@ -54,11 +54,13 @@
                   script[i] = function (sketch) {
                       let angle = 0;
                       sketch.setup = _ => {
+                          sketch.angleMode(sketch.DEGREES);
                           sketch.createCanvas(100, 100)
                       }
                       sketch.draw = _ => {
+                          sketch.noLoop()
                           sketch.background(sketch.analysis['tempo'])
-                          angle = sketch.analysis['tempo'];
+                          angle = sketch.map((sketch.analysis['danceability'])*100, 0, 100, 0, 180)-180;
                           sketch.stroke(255);
                           sketch.translate(50, sketch.height);
                           sketch.branch(40);
