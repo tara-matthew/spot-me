@@ -49,22 +49,7 @@ class PlaylistController extends Controller
 
     public function exportPlaylist($id)
     {
-        $tracks = $this->spotify->getPlaylistTracks($id);
-        // Get the result in json
-        $tracks = response()->json($tracks);
-        // Decode the json
-        $tracks = $tracks->getData()->items;
-
-        $info = $this->playlist->getTracks($id);
-
-        $info['playlistTitle'] = $this->spotify->getPlaylist($id)->name;
-
-        foreach ($tracks as $key => $item) {
-            $info[$key]['name'] = $item->track->name;
-            $info[$key]['artist'] = $item->track->artists[0]->name;
-        }
-
-        $this->playlist->exportToCsv($info);
+        $this->playlist->exportToCsv($id);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Helpers;
 
 use SpotifyWebAPI;
+use App\Http\Helpers\Pdf;
 
 class Playlist
 {
@@ -11,6 +12,7 @@ class Playlist
     public function __construct(SpotifyWebApi\SpotifyWebAPI $spotify)
     {
         $this->spotify = $spotify;
+        $this->pdf = new Pdf;
     }
 
     /**
@@ -139,34 +141,38 @@ class Playlist
             }
         }
 
-
         return $analysis;
     }
 
-    public function exportToCsv($json)
+    public function exportToCsv($id)
     {
-        $filename = "export.csv";
-        $delimiter = ";";
+        $tracks = $this->getTracks($id);
+        $info = $this->formatTracks($tracks, $id);
 
-        // open raw memory as file so no temp files needed, you might run out of memory though
-        $file = fopen('file.csv', 'w');
-        // loop over the input array
-        foreach ($json as $line) {
-            if (is_array($line)) {
-                // generate csv lines from the inner arrays
-                fputcsv($file, [$line['name'], $line['artist']]);
-            }
-        }
+        $this->pdf->export($info);
 
-        // reset the file pointer to the start of the file
-//        fseek($f, 0);
-        // tell the browser it's going to be a csv file
-//        header('Content-Type: application/csv');
-        // tell the browser we want to save it instead of displaying it
-        header('Content-Disposition: attachment; filename="' . $filename . '";');
-        // make php send the generated csv lines to the browser
-//        fpassthru($f);
-
-        fclose($file);
+//        $filename = "export.csv";
+//        $delimiter = ";";
+//
+//        // open raw memory as file so no temp files needed, you might run out of memory though
+//        $file = fopen('file.csv', 'w');
+//        // loop over the input array
+//        foreach ($info as $line) {
+//            if (is_array($line)) {
+//                // generate csv lines from the inner arrays
+//                fputcsv($file, [$line['name'], $line['artist']]);
+//            }
+//        }
+//
+//        // reset the file pointer to the start of the file
+////        fseek($f, 0);
+//        // tell the browser it's going to be a csv file
+////        header('Content-Type: application/csv');
+//        // tell the browser we want to save it instead of displaying it
+//        header('Content-Disposition: attachment; filename="' . $filename . '";');
+//        // make php send the generated csv lines to the browser
+////        fpassthru($f);
+//
+//        fclose($file);
     }
 }
