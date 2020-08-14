@@ -21,7 +21,7 @@
                                     <v-divider></v-divider>
                                 </v-col>
                                 <v-col>
-                                    <div :id="index"></div>
+                                    <div :id="index" :ref="'canvas' + index"></div>
                                 </v-col>
                             </v-row>
                         </template>
@@ -95,10 +95,16 @@
 
         methods: {
             exportPlaylist() {
-                const playlistId = this.$route.params.playlistId;
-                window.axios.get('/api/playlists/' + playlistId + '/export').then(response => {
-                    this.playlist = response.data;
-                })
+                // const playlistId = this.$route.params.playlistId;
+                //
+                // window.axios.get('/api/playlists/' + playlistId + '/export').then(response => {
+                //     this.playlist = response.data;
+                // })
+
+                let canvas = this.$refs.canvas0[0].childNodes[0]
+                console.log(canvas);
+                const dataUrl = canvas.toDataURL('image/png');
+                console.log(dataUrl);
             },
             analysePlaylistTracks() {
                 const playlistId = this.$route.params.playlistId;
