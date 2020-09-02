@@ -108,11 +108,11 @@ class Playlist
     {
         $info = [];
 
-        $info['playlistTitle'] = $this->spotify->getPlaylist($playlistId)->name;
+        $info['info']['playlistTitle'] = $this->spotify->getPlaylist($playlistId)->name;
 
         foreach ($tracks as $key => $item) {
-            $info[$key]['name'] = $item->track->name;
-            $info[$key]['artist'] = $item->track->artists[0]->name;
+            $info['tracks'][$key]['name'] = $item->track->name;
+            $info['tracks'][$key]['artist'] = $item->track->artists[0]->name;
         }
 
         return $info;

@@ -2,14 +2,12 @@
     <v-container v-if="!isLoading">
         <v-row justify="center">
             <v-col cols="6" >
-                <h1> {{ playlist.playlistTitle }}</h1>
+                <h1> {{ playlist.info.playlistTitle }}</h1>
                 <v-btn @click="exportPlaylist">Export this playlist</v-btn>
-                <v-btn @click="analysePlaylistTracks">Analyse tracks</v-btn>
-
                 <v-card>
 
                     <v-list two-line>
-                        <template v-for="(track, index) in playlist">
+                        <template v-for="(track, index) in playlist.tracks">
                             <v-row>
                                 <v-col>
                                     <v-subheader>
@@ -45,8 +43,7 @@
         ],
         watch: {
           analysis() {
-              console.log(this.analysis)
-              const playlistLength = Object.keys(this.playlist).length;
+              const playlistLength = Object.keys(this.playlist.tracks).length;
               let script = [];
               let number = [];
 
