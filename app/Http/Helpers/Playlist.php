@@ -146,10 +146,11 @@ class Playlist
 
     public function exportToCsv($id)
     {
+        $payload = request()->getContent();
         $tracks = $this->getTracks($id);
         $info = $this->formatTracks($tracks, $id);
 
-        $this->pdf->export($info);
+        $this->pdf->export($info, $payload);
 
 //        $filename = "export.csv";
 //        $delimiter = ";";

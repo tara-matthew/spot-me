@@ -47,7 +47,7 @@
               let script = [];
               let number = [];
 
-              for (var i = 0; i < playlistLength - 1; i++ ) {
+              for (var i = 0; i < playlistLength; i++ ) {
                   script[i] = function (sketch) {
                       let angle = 0;
                       sketch.setup = _ => {
@@ -56,7 +56,7 @@
                       }
                       sketch.draw = _ => {
                           sketch.noLoop()
-                          sketch.background(sketch.analysis['tempo'])
+                          sketch.background(sketch.analysis['tempo']);
                           angle = sketch.map((sketch.analysis['danceability'])*100, 0, 100, 0, 180)-180;
                           sketch.stroke(255);
                           sketch.translate(50, sketch.height);
@@ -92,24 +92,24 @@
 
         methods: {
             exportPlaylist() {
-                // const playlistId = this.$route.params.playlistId;
-                //
-                // window.axios.get('/api/playlists/' + playlistId + '/export').then(response => {
-                //     this.playlist = response.data;
-                // })
-
-                let canvas = this.$refs.canvas0[0].childNodes[0]
-                console.log(canvas);
-                const dataUrl = canvas.toDataURL('image/png');
-                console.log(dataUrl);
-            },
-            analysePlaylistTracks() {
                 const playlistId = this.$route.params.playlistId;
-                window.axios.get('/api/playlists/' + playlistId + '/analyse').then(response => {
-                    this.analysis = response.data;
-                    console.log(this.analysis);
+                let canvases = [];
+                let dataUrls = [];
+
+                for (let ref in this.$refs) {
+                    canvases.push(this.$refs[ref][0].childNodes[0]);
+                }
+
+                canvases.forEach(function(item, index) {
+                    dataUrls.push(item.toDataURL('image/png'));
                 })
-            }
+
+                window.axios.post('/api/playlists/' + playlistId + '/export', {
+                    dataUrls: dataUrls
+                }).then(response => {
+                    // this.playlist = response.data;
+                })
+            },
         },
 
         components: {
