@@ -15,25 +15,41 @@ class Pdf {
 
     public function export($info) {
 
-
         $this->tcpdf->setCreator(PDF_CREATOR);
+        $this->tcpdf->setPrintHeader(false);
+        $this->tcpdf->setPrintFooter(false);
         $this->tcpdf->AddPage();
 
-        $html = '<h1>' . $info['info']['playlistTitle'] . '</h1>';
+        $html = '<style>
+                    .margin {
+                        margin-bottom:1000px;
+                    }
+                    </style>';
+
+        $html .= '<h1 class="margin" style="text-align:center;">' . $info['info']['playlistTitle'] . '</h1> <br>';
+
+        $this->tcpdf->writeHTML($html, true, false, true, false, '');
 
         foreach($info['tracks'] as $key => $tracks) {
 
             $decodedImage = preg_replace('#^data:image/[^;]+;base64,#', '', $tracks['image']);
+            $filteredData = substr($tracks['image'], strpos($tracks['image'], ",")+1);
+            $unencodedData = base64_decode($filteredData);
 
-            $html .=
+
+            $html =
                     '<div class="center">
                         <p>' . $tracks["name"] . '</p>
                         <p>' . $tracks['artist'] . '</p>
-                        <img style="inline-float:right" src="@' . $decodedImage . '">
-                    </div>';
+                    </div>
+                    <br>';
+
+            $this->tcpdf->Image('@'.$unencodedData,'','','','','','','',false,300,'R',false,false,0,'','',false,false);
+
+            $this->tcpdf->writeHTML($html, true, false, true, false, '');
+
         }
 
-        $this->tcpdf->writeHTML($html, true, false, true, false, '');
 
         $this->tcpdf->Output('C:/Users/taram/Documents/Coding/Laravel/spot-me/example568.pdf', 'F');
 
