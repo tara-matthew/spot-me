@@ -52,11 +52,26 @@ class Playlist
 
     public function analysePlaylistTracks($playlistId)
     {
-        $tracks = $this->getTracks($playlistId);
-        $ids = $this->getTrackIds($tracks);
 
-        $analysis = response()
-            ->json($this->spotify->getAudioFeatures($ids));
+        $trackCount = $this->getTrackCount($playlistId);
+        $apiCallsRequired =  ceil($trackCount / 100);
+        $tracks = [];
+        $mergedAnalysis = [];
+        $ids = [];
+        $analysis = [];
+
+        for ($i = 0; $i < $apiCallsRequired; $i++) {
+            $tracks[] = $this->getTracks($playlistId, $i * 100);
+        }
+
+        foreach($tracks as $track) {
+            $ids[] = $this->getTrackIds($track);
+        }
+
+        foreach($ids as $id) {
+            $analysis[] = response()
+                ->json($this->spotify->getAudioFeatures($id));
+        }
 
         return $this->formatAnalysis($analysis);
     }
@@ -64,17 +79,24 @@ class Playlist
     /**
      * Get a playlist's tracks in a format to be displayed
      * @param $id
+     * @param $offset
      * @return array
      */
-    public function getTracks($id)
+    public function getTracks($id, $offset = 0)
     {
-        $tracks = $this->spotify->getPlaylistTracks($id);
+        $tracks = $this->spotify->getPlaylistTracks($id, ['offset' => $offset]);
         // Get the result in json
         $tracks = response()->json($tracks);
         // Decode the json
         $tracks = $tracks->getData()->items;
 
         return $tracks;
+    }
+
+    public function getTrackCount($id)
+    {
+        $tracks = $this->spotify->getPlaylistTracks($id);
+        return $tracks->total;
     }
 
     public function getTrackIds($tracks)
@@ -98,8 +120,20 @@ class Playlist
 
     public function getFormattedTracks($id)
     {
-        $tracks = $this->getTracks($id);
-        $formattedTracks = $this->formatTracks($tracks, $id);
+        $trackCount = $this->getTrackCount($id);
+        $apiCallsRequired =  ceil($trackCount / 100);
+        $tracks = [];
+        $mergedTracks = [];
+
+        for ($i = 0; $i < $apiCallsRequired; $i++) {
+            $tracks[] = $this->getTracks($id, $i * 100);
+        }
+
+        foreach($tracks as $tempArray) {
+            $mergedTracks = array_merge($mergedTracks, $tempArray);
+        }
+
+        $formattedTracks = $this->formatTracks($mergedTracks, $id);
 
         return $formattedTracks;
     }
@@ -126,12 +160,19 @@ class Playlist
             'uri',
             'track_href'
         ];
+        $mergedAnalysis = [];
+        $data = [];
 
-        $data = $tracks->getData()->audio_features;
-//        dd($data);
+        foreach($tracks as $track) {
+            $data[] = $track->getData()->audio_features;
+        }
         $analysis = [];
 
-        foreach ($data as $key => $track) {
+        foreach($data as $tempArray) {
+            $mergedAnalysis = array_merge($mergedAnalysis, $tempArray);
+        }
+
+        foreach ($mergedAnalysis as $key => $track) {
             foreach ($track as $category => $value) {
                 if (in_array($category, $excludedCategories)) {
                     continue;
