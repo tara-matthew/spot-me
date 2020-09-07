@@ -55,14 +55,11 @@ class Playlist
 
         $trackCount = $this->getTrackCount($playlistId);
         $apiCallsRequired =  ceil($trackCount / 100);
-        $tracks = [];
-        $mergedAnalysis = [];
         $ids = [];
         $analysis = [];
+        $type = 'tracks';
 
-        for ($i = 0; $i < $apiCallsRequired; $i++) {
-            $tracks[] = $this->getTracks($playlistId, $i * 100);
-        }
+        $tracks = $this->getAll($apiCallsRequired, $playlistId, $type);
 
         foreach($tracks as $track) {
             $ids[] = $this->getTrackIds($track);
@@ -122,20 +119,41 @@ class Playlist
     {
         $trackCount = $this->getTrackCount($id);
         $apiCallsRequired =  ceil($trackCount / 100);
-        $tracks = [];
-        $mergedTracks = [];
 
-        for ($i = 0; $i < $apiCallsRequired; $i++) {
-            $tracks[] = $this->getTracks($id, $i * 100);
-        }
+        $type = 'tracks';
 
-        foreach($tracks as $tempArray) {
-            $mergedTracks = array_merge($mergedTracks, $tempArray);
-        }
+        $tracks = $this->getAll($apiCallsRequired, $id, $type);
+
+        $mergedTracks = $this->mergeArray($tracks);
 
         $formattedTracks = $this->formatTracks($mergedTracks, $id);
 
         return $formattedTracks;
+    }
+
+    public function mergeArray($array)
+    {
+        $merged = [];
+
+        foreach($array as $tempArray) {
+            $merged = array_merge($merged, $tempArray);
+        }
+
+        return $merged;
+    }
+
+    public function getAll($apiCallsRequired, $id, $type = 'tracks')
+    {
+        $all = [];
+
+        for ($i = 0; $i < $apiCallsRequired; $i++) {
+            //TODO make type into a constant int
+            if ($type == 'tracks') {
+                $all[] = $this->getTracks($id, $i * 100);
+            }
+        }
+
+        return $all;
     }
 
     public function formatTracks($tracks, $playlistId)
@@ -160,17 +178,15 @@ class Playlist
             'uri',
             'track_href'
         ];
-        $mergedAnalysis = [];
+
         $data = [];
+        $analysis = [];
 
         foreach($tracks as $track) {
             $data[] = $track->getData()->audio_features;
         }
-        $analysis = [];
 
-        foreach($data as $tempArray) {
-            $mergedAnalysis = array_merge($mergedAnalysis, $tempArray);
-        }
+        $mergedAnalysis = $this->mergeArray($data);
 
         foreach ($mergedAnalysis as $key => $track) {
             foreach ($track as $category => $value) {
@@ -188,38 +204,12 @@ class Playlist
     public function exportToCsv($id)
     {
         $payload = json_decode(request()->getContent(), true);
-        $tracks = $this->getTracks($id);
-
-        $info = $this->formatTracks($tracks, $id);
+        $info = $this->getFormattedTracks($id);
 
         foreach($info['tracks'] as $key => $track) {
             $info['tracks'][$key]['image'] = $payload['dataUrls'][$key];
         }
 
         $this->pdf->export($info);
-
-//        $filename = "export.csv";
-//        $delimiter = ";";
-//
-//        // open raw memory as file so no temp files needed, you might run out of memory though
-//        $file = fopen('file.csv', 'w');
-//        // loop over the input array
-//        foreach ($info as $line) {
-//            if (is_array($line)) {
-//                // generate csv lines from the inner arrays
-//                fputcsv($file, [$line['name'], $line['artist']]);
-//            }
-//        }
-//
-//        // reset the file pointer to the start of the file
-////        fseek($f, 0);
-//        // tell the browser it's going to be a csv file
-////        header('Content-Type: application/csv');
-//        // tell the browser we want to save it instead of displaying it
-//        header('Content-Disposition: attachment; filename="' . $filename . '";');
-//        // make php send the generated csv lines to the browser
-////        fpassthru($f);
-//
-//        fclose($file);
     }
 }
