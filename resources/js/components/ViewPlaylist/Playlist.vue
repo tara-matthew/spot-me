@@ -16,12 +16,12 @@
                                     <v-list-item>
                                         {{ track.artist }}
                                     </v-list-item>
-                                    <v-divider></v-divider>
                                 </v-col>
                                 <v-col>
-                                    <div :id="index" :ref="'canvas' + index"></div>
+                                    <div class="d-flex justify-center":id="index" :ref="'canvas' + index"></div>
                                 </v-col>
                             </v-row>
+                            <v-divider></v-divider>
                         </template>
                     </v-list>
 
