@@ -39,17 +39,9 @@ class PlaylistController extends Controller
         return $this->playlist->analysePlaylistTracks($id);
     }
 
-    public function exportPlaylists()
-    {
-        $playlistData = $this->playlist->getUserPlaylists($this->spotify);
-        $this->playlist->exportToCsv($playlistData);
-
-        return $playlistData;
-    }
-
     public function exportPlaylist($id)
     {
-        $this->playlist->exportToCsv($id);
+        $this->playlist->exportToPdf($id);
     }
 
     /**

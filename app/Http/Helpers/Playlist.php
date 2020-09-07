@@ -50,6 +50,11 @@ class Playlist
 
     }
 
+    /**
+     * Analyse a playlist's tracks
+     * @param $playlistId
+     * @return array
+     */
     public function analysePlaylistTracks($playlistId)
     {
 
@@ -90,12 +95,22 @@ class Playlist
         return $tracks;
     }
 
+    /**
+     * Get the total track count in a playlist
+     * @param $id
+     * @return mixed
+     */
     public function getTrackCount($id)
     {
         $tracks = $this->spotify->getPlaylistTracks($id);
         return $tracks->total;
     }
 
+    /**
+     * Get the ids of playlist tracks
+     * @param $tracks
+     * @return array
+     */
     public function getTrackIds($tracks)
     {
         $ids = [];
@@ -106,15 +121,11 @@ class Playlist
         return $ids;
     }
 
-    public function getAudioAnalysis($ids)
-    {
-        $analysis = $this->spotify->getAudioFeatures($ids);
-        $analysis = response()->json($analysis);
-
-        return $analysis;
-
-    }
-
+    /**
+     * Get a tracklist which is correctly formatted
+     * @param $id
+     * @return array
+     */
     public function getFormattedTracks($id)
     {
         $trackCount = $this->getTrackCount($id);
@@ -131,6 +142,11 @@ class Playlist
         return $formattedTracks;
     }
 
+    /**
+     * Merge an array's outer keys
+     * @param $array
+     * @return array
+     */
     public function mergeArray($array)
     {
         $merged = [];
@@ -142,6 +158,13 @@ class Playlist
         return $merged;
     }
 
+    /**
+     * Get all results - Loops through api calls if the data to be returned is more than the max limit of a single call
+     * @param $apiCallsRequired
+     * @param $id
+     * @param string $type
+     * @return array
+     */
     public function getAll($apiCallsRequired, $id, $type = 'tracks')
     {
         $all = [];
@@ -156,6 +179,12 @@ class Playlist
         return $all;
     }
 
+    /**
+     * Format tracks for display
+     * @param $tracks
+     * @param $playlistId
+     * @return array
+     */
     public function formatTracks($tracks, $playlistId)
     {
         $info = [];
@@ -170,6 +199,11 @@ class Playlist
         return $info;
     }
 
+    /**
+     * Format analysis for display
+     * @param $tracks
+     * @return array
+     */
     public function formatAnalysis($tracks)
     {
         $excludedCategories = [
@@ -201,7 +235,11 @@ class Playlist
         return $analysis;
     }
 
-    public function exportToCsv($id)
+    /**
+     * Export to pdf
+     * @param $id
+     */
+    public function exportToPdf($id)
     {
         $payload = json_decode(request()->getContent(), true);
         $info = $this->getFormattedTracks($id);
