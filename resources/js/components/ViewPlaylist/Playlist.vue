@@ -105,9 +105,18 @@
                 })
 
                 window.axios.post('/api/playlists/' + playlistId + '/export', {
-                    dataUrls: dataUrls
+                    headers: {
+                        contentType: 'application/pdf'
+                    },
+                    dataUrls: dataUrls,
+                }, {
+                    responseType: 'arraybuffer'
                 }).then(response => {
-                    // this.playlist = response.data;
+                    let blob = new Blob([response.data], {type: 'application/pdf'})
+                    let link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = this.playlist.info.playlistTitle;
+                    link.click();
                 })
             },
         },

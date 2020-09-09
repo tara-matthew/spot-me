@@ -62,7 +62,7 @@ class Pdf
 
         }
 
-        $this->tcpdf->Output('C:/Users/taram/Documents/Coding/Laravel/spot-me/exports/' . $info['info']['playlistTitle'] . '.pdf', 'F');
+        $this->tcpdf->Output('C:/Users/taram/Documents/Coding/Laravel/spot-me/exports/' . $info['info']['playlistTitle'] . '.pdf', 'D');
 
     }
 
