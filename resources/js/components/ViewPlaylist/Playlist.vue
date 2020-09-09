@@ -1,5 +1,8 @@
 <template>
     <v-container v-if="!isLoading">
+        <div v-show="aTag">
+            <a ref="exportButton" :href="exportHref" :download="exportTitle"></a>
+        </div>
         <v-row justify="center">
             <v-col cols="6" >
                 <h1> {{ playlist.info.playlistTitle }}</h1>
@@ -41,6 +44,13 @@
             'isLoading',
             'p5Loaded'
         ],
+        data() {
+            return {
+                aTag: null,
+                exportHref: null,
+                exportTitle: null
+            }
+        },
         watch: {
           analysis() {
               const playlistLength = Object.keys(this.playlist.tracks).length;
@@ -97,7 +107,9 @@
                 let dataUrls = [];
 
                 for (let ref in this.$refs) {
-                    canvases.push(this.$refs[ref][0].childNodes[0]);
+                    if ((ref).match(/canvas/)) {
+                        canvases.push(this.$refs[ref][0].childNodes[0]);
+                    }
                 }
 
                 canvases.forEach(function(item, index) {
@@ -113,10 +125,13 @@
                     responseType: 'arraybuffer'
                 }).then(response => {
                     let blob = new Blob([response.data], {type: 'application/pdf'})
-                    let link = document.createElement('a');
-                    link.href = window.URL.createObjectURL(blob);
-                    link.download = this.playlist.info.playlistTitle;
-                    link.click();
+                    this.aTag = true
+                    this.exportHref = window.URL.createObjectURL(blob);
+                    this.exportTitle = this.playlist.info.playlistTitle;
+                    const exportButton = this.$refs.exportButton;
+                    setTimeout(() => {
+                        this.$refs.exportButton.click();
+                    }, 2000);
                 })
             },
         },
