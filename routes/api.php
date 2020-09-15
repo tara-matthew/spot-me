@@ -26,8 +26,10 @@ Route::get('tracks/top', 'TrackController@getTopTracks');
 Route::Resource('/tracks', 'TrackController');
 
 Route::get('playlists/export', 'PlaylistController@exportPlaylists');
-Route::get('playlists/{playlist}/export', 'PlaylistController@exportPlaylist');
+Route::post('playlists/{playlist}/export', 'PlaylistController@exportPlaylist');
+Route::get('playlists/{playlist}/analyse', 'PlaylistController@analysePlaylistTracks');
+
 Route::Resource('/playlists', 'PlaylistController');
-Route::Resource('playlists.tracks', 'PlaylistTrackController');
+//Route::Resource('playlists.tracks', 'PlaylistTrackController');
 
 Route::Resource('/export-playlists', 'PlaylistExportController');
