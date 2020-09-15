@@ -128,12 +128,12 @@
                     responseType: 'arraybuffer'
                 }).then(response => {
                     let blob = new Blob([response.data], {type: 'application/pdf'})
-                    this.aTag = true
+                    this.aTag = true;
                     this.exportHref = window.URL.createObjectURL(blob);
                     this.exportTitle = this.playlist.info.playlistTitle;
                     const exportButton = this.$refs.exportButton;
                     setTimeout(() => {
-                        this.$refs.exportButton.click();
+                        exportButton.click();
                     }, 2000);
                 })
             },
