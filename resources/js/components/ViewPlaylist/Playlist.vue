@@ -5,8 +5,11 @@
         </div>
         <v-row justify="center">
             <v-col cols="6" >
-                <h1> {{ playlist.info.playlistTitle }}</h1>
-                <v-btn @click="exportPlaylist">Export this playlist</v-btn>
+                <div class="d-flex justify-end">
+                    <v-btn class="export-button" x-large @click="exportPlaylist">Export</v-btn>
+                </div>
+
+                <h1 class="text-center playlist-title"> {{ playlist.info.playlistTitle }}</h1>
                 <v-card>
 
                     <v-list two-line>
@@ -141,3 +144,14 @@
         }
     }
 </script>
+
+<style scoped>
+    .playlist-title {
+        padding: 20px;
+        background-color: #bab8b3;
+    }
+
+    .export-button {
+        margin-bottom: 10px;
+    }
+</style>
