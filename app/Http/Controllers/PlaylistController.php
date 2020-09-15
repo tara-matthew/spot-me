@@ -19,7 +19,15 @@ class PlaylistController extends Controller
 
         $this->middleware(function ($request, $next) {
            $token = $request->session()->get('token');
-           $this->spotify->setAccessToken($token);
+           $spotifySession = $request->session()->get('spotify');
+           $refreshToken = DB::select('select token from authentication where id = ?', [1]);
+            if ($token) {
+//                return redirect()->action('AuthenticationController@redirect');
+               $this->spotify->setAccessToken($token);
+               $spotifySession->setRefreshToken($refreshToken);
+           } else {
+               $spotifySession->refreshAccessToken($refreshToken);
+           }
 
            return $next($request);
         });
