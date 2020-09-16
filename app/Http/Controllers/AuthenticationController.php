@@ -50,4 +50,16 @@ class AuthenticationController extends Controller
 
         return redirect('playlists');
     }
+
+    public function refreshToken(Request $request)
+    {
+        $refreshToken = $request->refreshToken[0]['token'];
+        $this->session->refreshAccessToken($refreshToken);
+        $accessToken = $this->session->getAccessToken();
+        $request->session()->put('token', $accessToken);
+        $request->session()->put('spotify', $this->session);
+
+        return redirect('playlists');
+
+    }
 }

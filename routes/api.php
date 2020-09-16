@@ -21,6 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/spotify/authenticate', 'AuthenticationController@authenticate');
 Route::get('/spotify/callback', 'AuthenticationController@redirect');
+Route::get('/spotify/refresh', 'AuthenticationController@refreshToken');
+
 
 Route::get('tracks/top', 'TrackController@getTopTracks');
 Route::Resource('/tracks', 'TrackController');

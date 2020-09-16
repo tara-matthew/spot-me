@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use SpotifyWebAPI as SpotifyWebApi;
+use SpotifyWebAPI\Session;
+
 use App\Http\Helpers\Playlist;
 use Illuminate\Support\Facades\DB;
 
@@ -17,16 +19,20 @@ class PlaylistController extends Controller
         $this->spotify = $spotify;
         $this->playlist = new Playlist($this->spotify);
 
+        $this->spotify->setOptions([
+            'auto_refresh' => true,
+        ]);
+
         $this->middleware(function ($request, $next) {
-           $token = $request->session()->get('token');
-           $spotifySession = $request->session()->get('spotify');
-           $refreshToken = DB::select('select token from authentication where id = ?', [1]);
+            $token = $request->session()->get('token');
+            $spotifySession = $request->session()->get('spotify');
+            $this->spotify->setSession($spotifySession);
+            $refreshToken = DB::select('select token from authentication where id = ?', [1]);
             if ($token) {
-//                return redirect()->action('AuthenticationController@redirect');
-               $this->spotify->setAccessToken($token);
-               $spotifySession->setRefreshToken($refreshToken);
-           } else {
-               $spotifySession->refreshAccessToken($refreshToken);
+                $this->spotify->setAccessToken($token);
+                $spotifySession->setRefreshToken($refreshToken[0]->token);
+            } else {
+                return redirect()->action('AuthenticationController@refreshToken', ['refreshToken' => $refreshToken]);
            }
 
            return $next($request);
