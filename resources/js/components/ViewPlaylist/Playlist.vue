@@ -6,10 +6,10 @@
         <v-row justify="center">
             <v-col cols="6" >
                 <div class="d-flex justify-end">
-                    <v-btn class="export-button" x-large @click="exportPlaylist">Export</v-btn>
+                    <v-btn class="export-button white--text rounded-xl" color="#1db954" large @click="exportPlaylist">Export</v-btn>
                 </div>
 
-                <h1 class="text-center playlist-title"> {{ playlist.info.playlistTitle }}</h1>
+                <h1 class="text-center white--text playlist-title"> {{ playlist.info.playlistTitle }}</h1>
                 <v-card>
 
                     <v-list two-line>

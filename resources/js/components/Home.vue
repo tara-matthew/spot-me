@@ -1,20 +1,18 @@
 <template>
-
-    <v-container>
-        <v-card
-            class="mx-auto"
-            max-width="344"
-            outlined>
-            <v-card-title class="justify-center"><h1>Authenticate!</h1></v-card-title>
-        </v-card>
-
-        <div>
-            <v-btn
-                @click="authenticateSpotify">
-                Authenticate me please
-            </v-btn>
-        </div>
-    </v-container>
+    <v-main class="fill-height fluid">
+        <v-container
+                fill-height
+                fluid
+                justify-center
+        >
+            <v-card class="p-3">
+                <v-card-title class="justify-center display-3 mb-3">Spot Me</v-card-title>
+                <p class="title">View and export your playlists, with their tracks visualised as fractal trees which represent their danceability.</p>
+                <p class="font-weight-bold title">Log in to check this out!</p>
+                <v-btn @click="authenticateSpotify" class="white--text rounded-xl" color="#1db954">Log in with Spotify</v-btn>
+            </v-card>
+        </v-container>
+    </v-main>
 
 </template>
 
