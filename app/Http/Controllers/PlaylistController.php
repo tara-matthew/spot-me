@@ -24,16 +24,20 @@ class PlaylistController extends Controller
         ]);
 
         $this->middleware(function ($request, $next) {
-            $token = $request->session()->get('token');
-            $spotifySession = $request->session()->get('spotify');
-            $this->spotify->setSession($spotifySession);
-            $refreshToken = DB::select('select token from authentication where id = ?', [1]);
-            if ($token) {
-                $this->spotify->setAccessToken($token);
-                $spotifySession->setRefreshToken($refreshToken[0]->token);
-            } else {
-                return redirect()->action('AuthenticationController@refreshToken', ['refreshToken' => $refreshToken]);
-           }
+            try {
+                $token = $request->session()->get('token');
+                $spotifySession = $request->session()->get('spotify');
+                $this->spotify->setSession($spotifySession);
+                $refreshToken = $request->session()->get('refreshToken');
+                if ($token) {
+                    $this->spotify->setAccessToken($token);
+                    $spotifySession->setRefreshToken($refreshToken);
+                } elseif ($spotifySession) {
+                    return redirect()->action('AuthenticationController@refreshToken', ['refreshToken' => $refreshToken]);
+                }
+            } catch (Exception $e) {
+                return $e->getMessage();
+            }
 
            return $next($request);
         });

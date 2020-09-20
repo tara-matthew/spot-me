@@ -44,16 +44,16 @@ class AuthenticationController extends Controller
         $refreshToken = $this->session->getRefreshToken();
 
         $request->session()->put('token', $accessToken);
-        $request->session()->put('spotify', $this->session);
+        $request->session()->put('refreshToken', $refreshToken);
 
-        DB::insert('update authentication set token = ? where id = 1', [$refreshToken]);
+        $request->session()->put('spotify', $this->session);
 
         return redirect('playlists');
     }
 
     public function refreshToken(Request $request)
     {
-        $refreshToken = $request->refreshToken[0]['token'];
+        $refreshToken = $request->refreshToken;
         $this->session->refreshAccessToken($refreshToken);
         $accessToken = $this->session->getAccessToken();
         $request->session()->put('token', $accessToken);

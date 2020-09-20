@@ -24,6 +24,9 @@
         async mounted() {
             window.axios.get('/api/playlists').then(response => {
                 this.playlists = response.data;
+            }).catch(function(error) {
+                console.log(error);
+                window.location = '/'
             })
         },
 
