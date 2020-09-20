@@ -1,5 +1,5 @@
 <template>
-    <v-container v-if="!isLoading">
+    <v-container v-if="!isLoading" v-show="p5Loaded">
         <div v-show="aTag">
             <a ref="exportButton" :href="exportHref" :download="exportTitle"></a>
         </div>
@@ -45,13 +45,20 @@
             'playlist',
             'analysis',
             'isLoading',
-            'p5Loaded'
         ],
+
         data() {
             return {
                 aTag: null,
                 exportHref: null,
-                exportTitle: null
+                exportTitle: null,
+                p5Loaded: false
+            }
+        },
+
+        computed: {
+            playlistTracks() {
+
             }
         },
         watch: {
@@ -96,6 +103,8 @@
                   number[i] = new p5(script[i], i.toString())
                   number[i].analysis = this.analysis[i];
               }
+
+              this.p5Loaded = true;
           }
         },
 

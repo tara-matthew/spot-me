@@ -21,7 +21,7 @@
                 playlist: {},
                 analysis: {},
                 isLoading: true,
-                p5Loaded: false
+                p5Loaded: false,
             }
         },
 
