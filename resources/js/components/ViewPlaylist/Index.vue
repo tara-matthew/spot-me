@@ -2,7 +2,9 @@
     <div>
         <page-header />
         <v-container>
+            <loading v-if="!loadImages" :loadImages="loadImages"/>
             <playlist v-if="playlist && analysis" :playlist="playlist" :isLoading="isLoading" :analysis="analysis" />
+
             <!--<visualise />-->
         </v-container>
 
@@ -13,6 +15,7 @@
 
     import PageHeader from '@/js/components/Header'
     import Playlist from '@/js/components/ViewPlaylist/Playlist'
+    import Loading from '@/js/components/ViewPlaylist/Loading'
     import Visualise from '@/js/components/ViewPlaylist/Visualise'
 
     export default {
@@ -21,31 +24,35 @@
                 playlist: {},
                 analysis: {},
                 isLoading: true,
-                p5Loaded: false,
+                loadImages: false,
             }
         },
 
         async mounted() {
-            const playlistId = this.$route.params.playlistId;
+                const playlistId = this.$route.params.playlistId;
 
-            window.axios.get('/api/playlists/' + playlistId).then(response => {
-                this.playlist = response.data;
-                this.isLoading = false;
-                // console.log(this.playlist);
+                window.axios.get('/api/playlists/' + playlistId).then(response => {
+                    this.playlist = response.data;
+                    this.isLoading = false;
 
-            })
+                }).catch(function(error) {
+                    console.log('here', error)
+                    window.location = '/'
+                })
 
-            window.axios.get('/api/playlists/' + playlistId + '/analyse').then(response => {
-                this.analysis = response.data;
-                console.log('here', this.analysis);
-            })
+                window.axios.get('/api/playlists/' + playlistId + '/analyse').then(response => {
+                    this.analysis = response.data;
+                    this.loadImages = true;
+                })
+
 
         },
 
         components: {
             PageHeader,
             Playlist,
-            Visualise
+            Visualise,
+            Loading
         }
     }
 

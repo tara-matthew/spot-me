@@ -35,9 +35,6 @@
             </v-col>
         </v-row>
     </v-container>
-    <v-container v-else>
-        <h1>Loading...</h1>
-    </v-container>
 </template>
 
 <script>
