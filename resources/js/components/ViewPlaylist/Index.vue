@@ -16,7 +16,6 @@
     import PageHeader from '@/js/components/Header'
     import Playlist from '@/js/components/ViewPlaylist/Playlist'
     import Loading from '@/js/components/ViewPlaylist/Loading'
-    import Visualise from '@/js/components/ViewPlaylist/Visualise'
 
     export default {
         data() {
@@ -51,7 +50,6 @@
         components: {
             PageHeader,
             Playlist,
-            Visualise,
             Loading
         }
     }
