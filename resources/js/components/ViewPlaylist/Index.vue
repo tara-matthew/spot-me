@@ -28,23 +28,19 @@
         },
 
         async mounted() {
-                const playlistId = this.$route.params.playlistId;
+            const playlistId = this.$route.params.playlistId;
 
-                window.axios.get('/api/playlists/' + playlistId).then(response => {
-                    this.playlist = response.data;
-                    this.isLoading = false;
-
-                }).catch(function(error) {
-                    console.log('here', error)
-                    window.location = '/'
-                })
-
-                window.axios.get('/api/playlists/' + playlistId + '/analyse').then(response => {
+            window.axios.get('/api/playlists/' + playlistId).then(response => {
+                this.playlist = response.data;
+                this.isLoading = false;
+                return window.axios.get('/api/playlists/' + playlistId + '/analyse').then(response => {
                     this.analysis = response.data;
                     this.loadImages = true;
                 })
-
-
+            }).catch(function(error) {
+                console.log('here', error)
+                window.location = '/'
+            })
         },
 
         components: {
