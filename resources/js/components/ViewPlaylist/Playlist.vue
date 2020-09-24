@@ -38,8 +38,6 @@
 </template>
 
 <script>
-    import Visualise from '@/js/components/ViewPlaylist/Visualise'
-
     export default {
         props: [
             'playlist',
@@ -147,10 +145,6 @@
                 })
             },
         },
-
-        components: {
-            Visualise
-        }
     }
 </script>
 
