@@ -8,6 +8,7 @@ use App\Http\Helpers\Pdf;
 class Playlist
 {
     protected $spotify;
+    protected $pdf;
 
     public function __construct(SpotifyWebApi\SpotifyWebAPI $spotify)
     {
