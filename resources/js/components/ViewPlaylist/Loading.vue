@@ -5,13 +5,11 @@
 </template>
 
 <script>
-
     export default {
         props: [
             'loadImages',
         ]
     }
-    
 </script>
 
 <style scoped>
