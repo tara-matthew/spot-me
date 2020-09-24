@@ -235,6 +235,7 @@ class Playlist
         }
 
         return $analysis;
+        
     }
 
     /**
