@@ -223,12 +223,14 @@ class Playlist
         $mergedAnalysis = $this->mergeArray($data);
 
         foreach ($mergedAnalysis as $key => $track) {
-            foreach ($track as $category => $value) {
-                if (in_array($category, $excludedCategories)) {
-                    continue;
-                }
+            if ($track != null) {
+                foreach ($track as $category => $value) {
+                    if (in_array($category, $excludedCategories)) {
+                        continue;
+                    }
 
-                $analysis[$key][$category] = $value;
+                    $analysis[$key][$category] = $value;
+                }
             }
         }
 
