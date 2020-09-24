@@ -11,7 +11,7 @@ class AuthenticationController extends Controller
 {
     protected $spotify;
 
-    public function __construct(SpotifyWebApi\SpotifyWebApi $spotify)
+    public function __construct(SpotifyWebApi\SpotifyWebAPI $spotify)
     {
         $this->spotify = $spotify;
 
