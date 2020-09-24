@@ -11,6 +11,7 @@
             'loadImages',
         ]
     }
+    
 </script>
 
 <style scoped>
