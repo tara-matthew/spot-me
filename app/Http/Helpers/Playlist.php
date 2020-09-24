@@ -33,7 +33,6 @@ class Playlist
             ->items);
 
         $key = 0;
-
         foreach ($playlists as $playlist) {
             //s Skip over playlists not made by the current user
             if ($playlist->owner->uri != 'spotify:user:' . $userId) {
