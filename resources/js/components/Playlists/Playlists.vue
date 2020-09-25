@@ -1,7 +1,7 @@
 <template>
     <v-container fill-height>
         <v-row>
-            <v-col @click="goToRoute(playlist.id)" :id="playlist.id" cols="3" v-for="playlist in playlists" :key="playlist.id">
+            <v-col @click="goToRoute(playlist.id)" :id="playlist.id" cols="12" md="3" v-for="playlist in playlists" :key="playlist.id">
                 <v-card min-height="200" class="pa-2 text-center justify-center d-flex">
                     <v-card-title>{{ playlist.name }}</v-card-title>
                 </v-card>

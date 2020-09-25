@@ -4,7 +4,7 @@
             <a ref="exportButton" :href="exportHref" :download="exportTitle"></a>
         </div>
         <v-row justify="center">
-            <v-col cols="6" >
+            <v-col cols="12" md="6" >
                 <div class="d-flex justify-end">
                     <v-btn class="export-button white--text rounded-xl" color="#1db954" large @click="exportPlaylist">Export</v-btn>
                 </div>
