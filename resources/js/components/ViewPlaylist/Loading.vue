@@ -1,6 +1,6 @@
 <template>
     <v-container v-if="!loadImages">
-        <h1 class="loading">Loading</h1>
+        <h1 class="loading">{{text}}</h1>
     </v-container>
 </template>
 
@@ -8,6 +8,7 @@
     export default {
         props: [
             'loadImages',
+            'text'
         ]
     }
 </script>

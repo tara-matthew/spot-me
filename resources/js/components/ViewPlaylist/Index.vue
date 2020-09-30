@@ -2,10 +2,9 @@
     <div>
         <page-header />
         <v-container>
-            <loading v-if="!loadImages" :loadImages="loadImages"/>
-            <playlist v-if="playlist && analysis" :playlist="playlist" :isLoading="isLoading" :analysis="analysis" />
-
-            <!--<visualise />-->
+            <loading v-if="!loadImages" :loadImages="loadImages" :text="text"/>
+            <loading v-if="exporting" :text="text"></loading>
+            <playlist v-if="playlist && analysis" @isExporting="isExporting" @finished="finished" :playlist="playlist" :isLoading="isLoading" :analysis="analysis" :exporting="exporting" />
         </v-container>
 
     </div>
@@ -24,6 +23,8 @@
                 analysis: {},
                 isLoading: true,
                 loadImages: false,
+                exporting: false,
+                text: 'Loading'
             }
         },
 
@@ -41,6 +42,18 @@
                 console.log('here', error)
                 window.location = '/'
             })
+        },
+
+        methods: {
+            isExporting() {
+                this.exporting = true;
+                this.text = 'Exporting';
+            },
+
+            finished() {
+              this.exporting = false;
+              this.text = 'Loading';
+            }
         },
 
         components: {

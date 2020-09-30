@@ -6,7 +6,9 @@
         <v-row justify="center">
             <v-col cols="12" md="6" >
                 <div class="d-flex justify-end">
-                    <v-btn class="export-button white--text rounded-xl" color="#1db954" large @click="exportPlaylist">Export</v-btn>
+                    <v-btn
+                            v-show="exported"
+                            class="export-button white--text rounded-xl" color="#1db954" large @click="exportPlaylist">Export</v-btn>
                 </div>
 
                 <h1 class="text-center white--text playlist-title"> {{ playlist.info.playlistTitle }}</h1>
@@ -38,6 +40,8 @@
 </template>
 
 <script>
+    import Loading from '@/js/components/ViewPlaylist/Loading'
+
     export default {
         props: [
             'playlist',
@@ -50,7 +54,8 @@
                 aTag: null,
                 exportHref: null,
                 exportTitle: null,
-                p5Loaded: false
+                p5Loaded: false,
+                exported: true
             }
         },
 
@@ -112,6 +117,8 @@
 
         methods: {
             exportPlaylist() {
+                this.$emit('isExporting');
+                this.exported = false;
                 const playlistId = this.$route.params.playlistId;
                 let canvases = [];
                 let dataUrls = [];
@@ -140,11 +147,16 @@
                     this.exportTitle = this.playlist.info.playlistTitle;
                     const exportButton = this.$refs.exportButton;
                     setTimeout(() => {
+                        this.$emit('finished')
+                        this.exported = true;
                         exportButton.click();
                     }, 2000);
                 })
             },
         },
+        components: {
+            Loading
+        }
     }
 </script>
 
