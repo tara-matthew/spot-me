@@ -4,11 +4,17 @@
             <a ref="exportButton" :href="exportHref" :download="exportTitle"></a>
         </div>
         <v-row justify="center">
-            <v-col cols="12" md="6" >
+            <v-col cols="12" md="6">
                 <div class="d-flex justify-end">
                     <v-btn
-                            v-show="exported"
-                            class="export-button white--text rounded-xl" color="#1db954" large @click="exportPlaylist">Export</v-btn>
+                            v-show="!exporting"
+                            class="export-button white--text rounded-xl"
+                            color="#1db954"
+                            large
+                            @click="exportPlaylist"
+                    >
+                        Export
+                    </v-btn>
                 </div>
 
                 <h1 class="text-center white--text playlist-title"> {{ playlist.info.playlistTitle }}</h1>
@@ -26,7 +32,7 @@
                                     </v-list-item>
                                 </v-col>
                                 <v-col>
-                                    <div class="d-flex justify-center":id="index" :ref="'canvas' + index"></div>
+                                    <div class="d-flex justify-center" :id="index" :ref="'canvas' + index"></div>
                                 </v-col>
                             </v-row>
                             <v-divider></v-divider>
@@ -55,7 +61,7 @@
                 exportHref: null,
                 exportTitle: null,
                 p5Loaded: false,
-                exported: true
+                exporting: false
             }
         },
 
@@ -65,50 +71,50 @@
             }
         },
         watch: {
-          analysis() {
-              const playlistLength = Object.keys(this.playlist.tracks).length;
-              let script = [];
-              let number = [];
+            analysis() {
+                const playlistLength = Object.keys(this.playlist.tracks).length;
+                let script = [];
+                let number = [];
 
-              for (var i = 0; i < playlistLength; i++) {
-                  script[i] = function (sketch) {
-                      let angle = 0;
-                      sketch.setup = _ => {
-                          sketch.angleMode(sketch.DEGREES);
-                          sketch.createCanvas(100, 100)
-                      }
-                      sketch.draw = _ => {
-                          sketch.noLoop()
-                          sketch.background(sketch.analysis['tempo']);
-                          angle = sketch.map((sketch.analysis['danceability']) * 100, 0, 100, 0, 180) - 180;
-                          sketch.stroke(255);
-                          sketch.translate(50, sketch.height);
-                          sketch.branch(40);
-                      }
+                for (var i = 0; i < playlistLength; i++) {
+                    script[i] = function (sketch) {
+                        let angle = 0;
+                        sketch.setup = _ => {
+                            sketch.angleMode(sketch.DEGREES);
+                            sketch.createCanvas(100, 100)
+                        }
+                        sketch.draw = _ => {
+                            sketch.noLoop()
+                            sketch.background(sketch.analysis['tempo']);
+                            angle = sketch.map((sketch.analysis['danceability']) * 100, 0, 100, 0, 180) - 180;
+                            sketch.stroke(255);
+                            sketch.translate(50, sketch.height);
+                            sketch.branch(40);
+                        }
 
-                      sketch.branch = (len) => {
-                          sketch.line(0, 0, 0, -len);
-                          sketch.translate(0, -len);
-                          if (len > 4) {
-                              sketch.push();
-                              sketch.rotate(angle);
-                              sketch.branch(len * 0.6);
-                              sketch.pop();
-                              sketch.push();
-                              sketch.rotate(-angle);
-                              sketch.branch(len * 0.6);
-                              sketch.pop();
-                          }
-                      }
-                  }
+                        sketch.branch = (len) => {
+                            sketch.line(0, 0, 0, -len);
+                            sketch.translate(0, -len);
+                            if (len > 4) {
+                                sketch.push();
+                                sketch.rotate(angle);
+                                sketch.branch(len * 0.6);
+                                sketch.pop();
+                                sketch.push();
+                                sketch.rotate(-angle);
+                                sketch.branch(len * 0.6);
+                                sketch.pop();
+                            }
+                        }
+                    }
 
-                  const p5 = require('p5');
-                  number[i] = new p5(script[i], i.toString())
-                  number[i].analysis = this.analysis[i];
-              }
+                    const p5 = require('p5');
+                    number[i] = new p5(script[i], i.toString())
+                    number[i].analysis = this.analysis[i];
+                }
 
-              this.p5Loaded = true;
-          }
+                this.p5Loaded = true;
+            }
         },
 
         mounted() {
@@ -117,8 +123,8 @@
 
         methods: {
             exportPlaylist() {
-                this.$emit('isExporting');
-                this.exported = false;
+                this.exporting = true;
+                this.$emit('isExporting', this.exporting);
                 const playlistId = this.$route.params.playlistId;
                 let canvases = [];
                 let dataUrls = [];
@@ -129,7 +135,7 @@
                     }
                 }
 
-                canvases.forEach(function(item, index) {
+                canvases.forEach(function (item, index) {
                     dataUrls.push(item.toDataURL('image/png'));
                 })
 
@@ -147,8 +153,8 @@
                     this.exportTitle = this.playlist.info.playlistTitle;
                     const exportButton = this.$refs.exportButton;
                     setTimeout(() => {
-                        this.$emit('finished')
-                        this.exported = true;
+                        this.exporting = false;
+                        this.$emit('isExporting', this.exporting)
                         exportButton.click();
                     }, 2000);
                 })

@@ -4,7 +4,7 @@
         <v-container>
             <loading v-if="!loadImages" :loadImages="loadImages" :text="text"/>
             <loading v-if="exporting" :text="text"></loading>
-            <playlist v-if="playlist && analysis" @isExporting="isExporting" @finished="finished" :playlist="playlist" :isLoading="isLoading" :analysis="analysis" :exporting="exporting" />
+            <playlist v-if="playlist && analysis" @isExporting="isExporting" :playlist="playlist" :isLoading="isLoading" :analysis="analysis" :exporting="exporting" />
         </v-container>
 
     </div>
@@ -45,15 +45,10 @@
         },
 
         methods: {
-            isExporting() {
-                this.exporting = true;
-                this.text = 'Exporting';
+            isExporting(exporting) {
+                this.exporting = exporting;
+                this.text = (this.exporting ? 'Exporting' : 'Loading');
             },
-
-            finished() {
-              this.exporting = false;
-              this.text = 'Loading';
-            }
         },
 
         components: {
