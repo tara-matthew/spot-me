@@ -39,7 +39,6 @@
                     this.loadImages = true;
                 })
             }).catch(function(error) {
-                console.log('here', error)
                 window.location = '/'
             })
         },

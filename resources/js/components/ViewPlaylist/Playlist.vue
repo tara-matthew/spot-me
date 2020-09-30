@@ -117,10 +117,6 @@
             }
         },
 
-        mounted() {
-            console.log('Playlist component mounted.');
-        },
-
         methods: {
             exportPlaylist() {
                 this.exporting = true;
