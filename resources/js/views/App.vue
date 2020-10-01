@@ -8,6 +8,6 @@
 
 <style>
     #app {
-        background-color: lightgrey;
+        background-color: #c0d1c9;
     }
 </style>

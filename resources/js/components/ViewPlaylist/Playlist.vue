@@ -8,8 +8,8 @@
                 <div class="d-flex justify-end">
                     <v-btn
                             v-show="!exporting"
-                            class="export-button white--text rounded-xl"
-                            color="#1db954"
+                            class="export-button black--text rounded-xl"
+                            color="#ffffff"
                             large
                             @click="exportPlaylist"
                     >
@@ -85,9 +85,13 @@
                         }
                         sketch.draw = _ => {
                             sketch.noLoop()
-                            sketch.background(sketch.analysis['tempo']);
+                            let value = sketch.analysis['danceability'] * 100;
+                            let max = 100;
+                            let colour = (value/max) * 255;
+                            sketch.background(255, 255, 255);
                             angle = sketch.map((sketch.analysis['danceability']) * 100, 0, 100, 0, 180) - 180;
-                            sketch.stroke(255);
+                            sketch.stroke(0, colour, 0);
+                            sketch.strokeWeight(2.7);
                             sketch.translate(50, sketch.height);
                             sketch.branch(40);
                         }
@@ -165,7 +169,7 @@
 <style scoped>
     .playlist-title {
         padding: 20px;
-        background-color: #bab8b3;
+        background-color: #707372;
     }
 
     .export-button {
