@@ -15,14 +15,6 @@
         props: [
             'playlists'
         ],
-        mounted() {
-            console.log('Playlist Component mounted.');
-        },
-        watch: {
-            async playlists() {
-                console.log('here', this.playlists);
-            }
-        },
         methods: {
             async exportPlaylists() {
                 window.axios.get('/api/playlists/export').then(response => {
