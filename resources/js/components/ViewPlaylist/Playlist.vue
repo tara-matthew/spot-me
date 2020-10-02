@@ -22,9 +22,9 @@
 
                     <v-list two-line>
                         <template v-for="(track, index) in playlist.tracks">
-                            <v-row>
+                            <v-row class="track-container">
                                 <v-col>
-                                    <v-subheader>
+                                    <v-subheader class="track-name">
                                         {{ track.name }}
                                     </v-subheader>
                                     <v-list-item>
@@ -174,5 +174,15 @@
 
     .export-button {
         margin-bottom: 10px;
+    }
+
+    /* TODO Do this in a Vue way */
+    @media (max-width: 425px) {
+        .track-name {
+            height: 100px;
+        }
+        .track-container {
+            align-items: center;
+        }
     }
 </style>
