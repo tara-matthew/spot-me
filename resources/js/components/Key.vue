@@ -26,7 +26,10 @@
                 let slider;
                 let width;
 
-                if (sketch.windowWidth >= 768) {
+                if (sketch.windowWidth >= 1440) {
+                    width = sketch.windowWidth/3;
+                }
+                else if (sketch.windowWidth >= 768 && sketch.windowWidth < 1440) {
                     width = sketch.windowWidth-(sketch.windowWidth*.5);
                 } else {
                     width = sketch.windowWidth-80;
@@ -91,24 +94,24 @@
     }
 
     #low-label {
-        left: 10%;
+        left: 15%;
     }
 
     #high-label {
-        left: 90%;
+        left: 85%;
     }
 
     .outer-container {
         height: calc(100% - 64px);
     }
-    
+
     /*TODO Improve this*/
-    @media (max-width: 426px) {
+    @media (max-width: 1025px) {
         #low-label {
             left: 5%;
         }
         #high-label {
-            right: 95%;
+            left: 95%;
         }
     }
 </style>
