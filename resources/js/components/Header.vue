@@ -9,5 +9,15 @@
             Spot Me
             </router-link>
         </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+            <v-btn
+                text
+                :to="{
+                    name: 'key'
+                }">
+            Key
+            </v-btn>
+        </v-toolbar-items>
     </v-toolbar>
 </template>

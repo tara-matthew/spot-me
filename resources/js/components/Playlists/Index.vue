@@ -11,8 +11,9 @@
 
 <script>
 
-    import PageHeader from '@/js/components/Header'
-    import Playlists from '@/js/components/Playlists/Playlists'
+    import PageHeader from '@/js/components/Header';
+    import Playlists from '@/js/components/Playlists/Playlists';
+    import Key from '@/js/components/Key';
 
     export default {
         data() {
@@ -32,7 +33,8 @@
 
         components: {
             PageHeader,
-            Playlists
+            Playlists,
+            Key
         }
     }
 
