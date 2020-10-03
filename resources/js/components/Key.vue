@@ -105,6 +105,12 @@
         height: calc(100% - 64px);
     }
 
+    @media (max-width: 768px) {
+        .outer-container {
+            height: calc(100% - 56px);
+        }
+    }
+
     /*TODO Improve this*/
     @media (max-width: 1025px) {
         #low-label {
