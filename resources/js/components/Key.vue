@@ -80,6 +80,10 @@
 
 
         },
+        destroyed() {
+            let elHtml = document.getElementsByTagName('html')[0]
+            elHtml.style.overflowY = null
+        },
         components: {
             PageHeader
         }
