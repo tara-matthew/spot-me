@@ -3,10 +3,16 @@
         <page-header/>
         <v-container text-center fill-height>
             <v-row>
-                <v-col cols="12">
+                <v-col cols="12" class="mt-7 mt-sm-0 mb-7 mb-sm-0">
+                    <p class="h3">Drag the slider to see what tracks of different danceability look like.
+                        Tracks with lower danceability are <span style="color:#000a00">darker</span>, and the tree gradually grows and becomes greener for more danceable tracks.
+                    </p>
+                </v-col>
+            </v-row>
+            <v-row>
+
+                <v-col cols="12" class="mt-7 mt-sm-0">
                     <div id="p5-canvas"></div>
-                    <p id="low-label" class="position-absolute">Low</p>
-                    <p id="high-label" class="position-absolute">High</p>
                 </v-col>
             </v-row>
         </v-container>
@@ -56,6 +62,7 @@
                     let max = 100;
                     let colour = ((angle + 180)/max) * 255;
                     sketch.stroke(0, colour, 0);
+                    sketch.strokeWeight(2.7);
                 }
 
                 sketch.branch = (len) => {
@@ -93,28 +100,6 @@
 <style scoped>
     #p5-canvas {
         position: relative;
-    }
-
-    .position-absolute {
-        transform: translateX(-50%);
-    }
-
-    #low-label {
-        left: 15%;
-    }
-
-    #high-label {
-        left: 85%;
-    }
-
-    .outer-container {
-        height: calc(100% - 64px);
-    }
-
-    @media (max-width: 768px) {
-        .outer-container {
-            height: calc(100% - 56px);
-        }
     }
 
     /*TODO Improve this*/

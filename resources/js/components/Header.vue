@@ -12,6 +12,7 @@
         <v-spacer></v-spacer>
         <v-toolbar-items>
             <v-btn
+                class="white--text"
                 text
                 :to="{
                     name: 'key'
@@ -21,3 +22,9 @@
         </v-toolbar-items>
     </v-toolbar>
 </template>
+
+<style scoped>
+    a:hover {
+        text-decoration: none;
+    }
+</style>
