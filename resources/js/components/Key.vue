@@ -27,8 +27,6 @@
             let key;
             let script;
             let angle = 0;
-            let elHtml = document.getElementsByTagName('html')[0];
-            elHtml.style.overflowY = 'hidden';
 
             script = function(sketch) {
                 let slider;
@@ -88,8 +86,6 @@
 
         },
         destroyed() {
-            let elHtml = document.getElementsByTagName('html')[0]
-            elHtml.style.overflowY = null
         },
         components: {
             PageHeader
