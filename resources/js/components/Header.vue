@@ -12,7 +12,7 @@
         <v-spacer></v-spacer>
         <v-toolbar-items>
             <v-btn
-                class="white--text"
+                class="header-button"
                 text
                 :to="{
                     name: 'key'
@@ -26,5 +26,8 @@
 <style scoped>
     a:hover {
         text-decoration: none;
+    }
+    .header-button {
+        color: #c0d1c9;
     }
 </style>

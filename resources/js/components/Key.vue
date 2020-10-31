@@ -3,10 +3,11 @@
         <page-header/>
         <v-container text-center fill-height>
             <v-row>
-                <v-col cols="12" class="mt-7 mt-sm-0 mb-7 mb-sm-0">
-                    <p class="h3">Drag the slider to see what tracks of different danceability look like.
-                        Tracks with lower danceability are <span style="color:#000a00">darker</span>, and the tree gradually grows and becomes greener for more danceable tracks.
-                    </p>
+                <v-col cols="12" class="mt-7 mt-sm-0 mb-0 mb-sm-0">
+                    <span class="text-h6">
+                        Drag the slider to see what tracks of different danceability look like. Tracks with lower danceability are <span
+                            style="color:#000a00">darker</span>, and the tree gradually grows and becomes a lighter green for more danceable tracks.
+                    </span>
                 </v-col>
             </v-row>
             <v-row>
@@ -82,10 +83,6 @@
             const p5 = require ('p5');
 
             key = new p5(script, 'p5-canvas');
-
-
-        },
-        destroyed() {
         },
         components: {
             PageHeader
@@ -97,14 +94,7 @@
     #p5-canvas {
         position: relative;
     }
-
-    /*TODO Improve this*/
-    @media (max-width: 1025px) {
-        #low-label {
-            left: 5%;
-        }
-        #high-label {
-            left: 95%;
-        }
+    .text-h6 {
+        line-height: unset;
     }
 </style>

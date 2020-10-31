@@ -29,6 +29,7 @@
         },
 
         async mounted() {
+            window.scrollTo(0,0);
             const playlistId = this.$route.params.playlistId;
 
             window.axios.get('/api/playlists/' + playlistId).then(response => {
