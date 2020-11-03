@@ -13,7 +13,7 @@ class Playlist
     public function __construct(SpotifyWebApi\SpotifyWebAPI $spotify)
     {
         $this->spotify = $spotify;
-        $this->pdf = new Pdf;
+        $this->pdf = new Pdf();
     }
 
     /**
@@ -47,7 +47,6 @@ class Playlist
         }
 
         return $userPlaylists;
-
     }
 
     /**
@@ -66,11 +65,11 @@ class Playlist
 
         $tracks = $this->getAll($apiCallsRequired, $playlistId, $type);
 
-        foreach($tracks as $track) {
+        foreach ($tracks as $track) {
             $ids[] = $this->getTrackIds($track);
         }
 
-        foreach($ids as $id) {
+        foreach ($ids as $id) {
             $analysis[] = response()
                 ->json($this->spotify->getAudioFeatures($id));
         }
@@ -151,7 +150,7 @@ class Playlist
     {
         $merged = [];
 
-        foreach($array as $tempArray) {
+        foreach ($array as $tempArray) {
             $merged = array_merge($merged, $tempArray);
         }
 
@@ -216,7 +215,7 @@ class Playlist
         $data = [];
         $analysis = [];
 
-        foreach($tracks as $track) {
+        foreach ($tracks as $track) {
             $data[] = $track->getData()->audio_features;
         }
 
@@ -235,7 +234,6 @@ class Playlist
         }
 
         return $analysis;
-        
     }
 
     /**
@@ -247,7 +245,7 @@ class Playlist
         $payload = json_decode(request()->getContent(), true);
         $info = $this->getFormattedTracks($id);
 
-        foreach($info['tracks'] as $key => $track) {
+        foreach ($info['tracks'] as $key => $track) {
             $info['tracks'][$key]['image'] = $payload['dataUrls'][$key];
         }
 

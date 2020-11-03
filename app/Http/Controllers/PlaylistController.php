@@ -39,7 +39,7 @@ class PlaylistController extends Controller
                 return $e->getMessage();
             }
 
-           return $next($request);
+            return $next($request);
         });
     }
 
