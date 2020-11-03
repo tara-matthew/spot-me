@@ -18,11 +18,11 @@ class Playlist
 
     /**
      * Get the playlists which a user has made
+     * @param array $options
      * @return array
      */
-    public function getUserPlaylists()
+    public function getUserPlaylists($options = ['limit' => 50])
     {
-        $options = ['limit' => 50];
         $userPlaylists = [];
 
         $userId = $this->spotify->me()->id;
@@ -52,18 +52,27 @@ class Playlist
     /**
      * Analyse a playlist's tracks
      * @param $playlistId
+     * @param string $type
      * @return array
      */
-    public function analysePlaylistTracks($playlistId)
+    public function analysePlaylistTracks($playlistId, $type = 'tracks')
     {
-
-        $trackCount = $this->getTrackCount($playlistId);
-        $apiCallsRequired =  ceil($trackCount / 100);
-        $ids = [];
-        $analysis = [];
-        $type = 'tracks';
+        $apiCallsRequired = $this->getApiCallsRequired($playlistId);
 
         $tracks = $this->getAll($apiCallsRequired, $playlistId, $type);
+
+        return $this->getAnalysisData($tracks);
+    }
+
+    /**
+     * Get the analysis data from an array of tracks
+     * @param $tracks
+     * @return array
+     */
+    public function getAnalysisData($tracks)
+    {
+        $ids = [];
+        $analysis = [];
 
         foreach ($tracks as $track) {
             $ids[] = $this->getTrackIds($track);
@@ -75,6 +84,16 @@ class Playlist
         }
 
         return $this->formatAnalysis($analysis);
+    }
+
+    /**
+     * Calculate how many api calls are needed based off the number of tracks in a playlist
+     * @param $playlistId
+     * @return float
+     */
+    public function getApiCallsRequired($playlistId)
+    {
+        return ceil(($this->getTrackCount($playlistId)) / 100);
     }
 
     /**
@@ -123,17 +142,13 @@ class Playlist
     /**
      * Get a tracklist which is correctly formatted
      * @param $id
+     * @param string $type
      * @return array
      */
-    public function getFormattedTracks($id)
+    public function getFormattedTracks($id, $type = 'tracks')
     {
-        $trackCount = $this->getTrackCount($id);
-        $apiCallsRequired =  ceil($trackCount / 100);
-
-        $type = 'tracks';
-
+        $apiCallsRequired = $this->getApiCallsRequired($id);
         $tracks = $this->getAll($apiCallsRequired, $id, $type);
-
         $mergedTracks = $this->mergeArray($tracks);
 
         $formattedTracks = $this->formatTracks($mergedTracks, $id);

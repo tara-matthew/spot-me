@@ -39,7 +39,8 @@ class Pdf
                 <br>
             ';
 
-            $this->tcpdf->Image('@' . $unencodedData,
+            $this->tcpdf->Image(
+                '@' . $unencodedData,
                 '',
                 '',
                 '30',
@@ -56,7 +57,8 @@ class Pdf
                 '',
                 '',
                 false,
-                false);
+                false
+            );
 
             $this->tcpdf->writeHTML($html, true, false, true, false, '');
 
