@@ -19,9 +19,31 @@
                 }">
             Key
             </v-btn>
+
+            <v-btn
+                class="header-button"
+                text
+                @click="signOut">
+                Sign Out
+            </v-btn>
         </v-toolbar-items>
     </v-toolbar>
 </template>
+
+<script>
+    export default {
+        methods: {
+            signOut() {
+                window.axios.post('api/signout').then(response => {
+                    this.$router.push({
+                        name: 'home'
+                    })
+                })
+
+            }
+        }
+    }
+</script>
 
 <style scoped>
     a:hover {

@@ -60,6 +60,10 @@ class AuthenticationController extends Controller
         $request->session()->put('spotify', $this->session);
 
         return redirect('playlists');
+    }
 
+    public function signOut(Request $request)
+    {
+        $request->session()->flush();
     }
 }
