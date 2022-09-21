@@ -30,7 +30,7 @@
     "dependencies": {
         "p5": "^1.1.9",
         "vue-router": "^3.3.4",
-        "vuetify": "^2.3.3",
+        "vuetify": "^2.6.10",
         "yargs-parser": ">=13.1.2",
         "xmlhttprequest-ssl": ">=1.6.2"
     }
